@@ -1,0 +1,843 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FlashAttention backward pass</title>
+<style>
+:root {
+  --paper: #f4f6f8;
+  --panel: #ffffff;
+  --panel2: #eaeef2;
+  --ink: #1b2430;
+  --ink2: #4a5868;
+  --ink3: #8795a5;
+  --line: #d4dbe2;
+  --q: #e8912d;
+  --v: #c75d8a;
+  --k: #3193c9;
+  --o: #3f9e63;
+  --q-soft: #e8912d2a;
+  --k-soft: #3193c92a;
+  --v-soft: #c75d8a2a;
+  --o-soft: #3f9e632a;
+  --hot: #c75d3a;
+  --code-bg: #eaeef2;
+  --shadow: 0 1px 3px rgba(20,30,45,.08), 0 4px 16px rgba(20,30,45,.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0f1319; --panel: #171d26; --panel2: #1f2732; --ink: #e6ebf1;
+    --ink2: #a8b4c2; --ink3: #6b7888; --line: #2b3542;
+    --q: #efa23f; --v: #d4719c; --k: #4aa8d8; --o: #52b077;
+    --q-soft: #efa23f26; --k-soft: #4aa8d826; --v-soft: #d4719c26; --o-soft: #52b07726;
+    --hot: #e07a52; --code-bg: #10151c;
+    --shadow: 0 1px 3px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="light"] {
+  --paper: #f4f6f8; --panel: #ffffff; --panel2: #eaeef2; --ink: #1b2430;
+  --ink2: #4a5868; --ink3: #8795a5; --line: #d4dbe2;
+  --q: #e8912d; --v: #c75d8a; --k: #3193c9; --o: #3f9e63;
+  --q-soft: #e8912d2a; --k-soft: #3193c92a; --v-soft: #c75d8a2a; --o-soft: #3f9e632a;
+  --hot: #c75d3a; --code-bg: #eaeef2;
+  --shadow: 0 1px 3px rgba(20,30,45,.08), 0 4px 16px rgba(20,30,45,.06);
+}
+:root[data-theme="dark"] {
+  --paper: #0f1319; --panel: #171d26; --panel2: #1f2732; --ink: #e6ebf1;
+  --ink2: #a8b4c2; --ink3: #6b7888; --line: #2b3542;
+  --q: #efa23f; --v: #d4719c; --k: #4aa8d8; --o: #52b077;
+  --q-soft: #efa23f26; --k-soft: #4aa8d826; --v-soft: #d4719c26; --o-soft: #52b07726;
+  --hot: #e07a52; --code-bg: #10151c;
+  --shadow: 0 1px 3px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.3);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 16px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.mono, code, .num { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.num { font-variant-numeric: tabular-nums; }
+
+.wrap { max-width: 740px; margin: 0 auto; padding: 0 20px; }
+.wide { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
+
+/* ---------- nav + header ---------- */
+.topnav {
+  border-bottom: 1px solid var(--line); padding: 14px 0;
+}
+.topnav .wrap { display: flex; align-items: baseline; gap: 16px; }
+.topnav a {
+  font: 600 13px ui-monospace, "SF Mono", Menlo, monospace; color: var(--k);
+  text-decoration: none;
+}
+.topnav a:hover { text-decoration: underline; }
+.topnav .here {
+  font: 600 13px ui-monospace, "SF Mono", Menlo, monospace; color: var(--ink3);
+  margin-left: auto; letter-spacing: .08em; text-transform: uppercase;
+}
+header { padding: 56px 0 48px; border-bottom: 1px solid var(--line); }
+.eyebrow {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink3); margin: 0 0 16px;
+}
+h1 {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: clamp(28px, 5vw, 44px); font-weight: 700;
+  letter-spacing: -.03em; line-height: 1.12; margin: 0 0 20px;
+  text-wrap: balance;
+}
+h1 .hl { color: var(--v); }
+.lede { font-size: 18px; color: var(--ink2); max-width: 62ch; margin: 0; }
+.lede a { color: var(--k); }
+
+/* ---------- sections ---------- */
+section { padding: 56px 0; border-bottom: 1px solid var(--line); }
+h2 {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: clamp(21px, 3vw, 27px); font-weight: 700; letter-spacing: -.02em;
+  margin: 0 0 8px; text-wrap: balance;
+}
+.secno {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink3); display: block; margin-bottom: 10px;
+}
+p { max-width: 66ch; }
+p, li { color: var(--ink2); }
+strong, b { color: var(--ink); }
+code {
+  background: var(--code-bg); padding: 1px 6px; border-radius: 4px;
+  font-size: .88em; color: var(--ink);
+}
+.formula {
+  background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px;
+  padding: 14px 18px; font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 14.5px; line-height: 1.8; overflow-x: auto; color: var(--ink);
+  margin: 20px 0;
+}
+.formula .c { color: var(--ink3); }
+.formula .fx { color: var(--hot); font-weight: 700; }
+
+.chip {
+  display: inline-block; padding: 0 7px; border-radius: 4px; font-weight: 600;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .85em;
+}
+.chip.q { background: var(--q); color: #fff; }
+.chip.k { background: var(--k); color: #fff; }
+.chip.v { background: var(--v); color: #fff; }
+.chip.o { background: var(--o); color: #fff; }
+
+/* saved-artifacts cards */
+.saved { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin: 24px 0; }
+.saved .card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  padding: 14px 16px; box-shadow: var(--shadow);
+}
+.saved .card h4 { margin: 0 0 4px; font: 700 14px ui-monospace, Menlo, monospace; }
+.saved .card .sz { font: 700 20px ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums; }
+.saved .card p { font-size: 13px; margin: 6px 0 0; line-height: 1.55; }
+.saved .card.no { border-style: dashed; opacity: .75; }
+.saved .card.no .sz { color: var(--hot); text-decoration: line-through; }
+
+/* ---------- app shell ---------- */
+.app {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: var(--shadow); padding: 22px; margin-top: 28px;
+}
+.app-title {
+  font-family: ui-monospace, Menlo, monospace; font-size: 13px;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--ink3);
+  margin: 0 0 14px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+.controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+button {
+  font: 600 14px/1 ui-monospace, Menlo, monospace; color: var(--ink);
+  background: var(--panel2); border: 1px solid var(--line); border-radius: 8px;
+  padding: 9px 14px; cursor: pointer;
+}
+button:hover { border-color: var(--ink3); }
+button:focus-visible { outline: 2px solid var(--k); outline-offset: 2px; }
+button.primary { background: var(--v); border-color: var(--v); color: #fff; min-width: 86px; }
+button:disabled { opacity: .4; cursor: default; }
+.spacer { flex: 1; }
+.stepctr { font-family: ui-monospace, Menlo, monospace; font-size: 13px; color: var(--ink3); font-variant-numeric: tabular-nums; }
+select {
+  font: 14px ui-monospace, Menlo, monospace; color: var(--ink);
+  background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px;
+  accent-color: var(--v);
+}
+
+.narr {
+  border-left: 3px solid var(--v); background: var(--v-soft);
+  border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 18px;
+  font-size: 15px; min-height: 68px; color: var(--ink);
+}
+.narr b { font-family: ui-monospace, Menlo, monospace; }
+.narr.phase-load { border-color: var(--k); background: var(--k-soft); }
+.narr.phase-write { border-color: var(--o); background: var(--o-soft); }
+.narr.phase-atomic { border-color: var(--hot); background: var(--q-soft); }
+
+/* ---------- stepper layout ---------- */
+.stage { display: grid; grid-template-columns: minmax(300px, 9fr) minmax(290px, 8fr) minmax(280px, 7fr) minmax(280px, 8fr); gap: 20px; }
+@media (max-width: 1180px) { .stage { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 680px)  { .stage { grid-template-columns: 1fr; } }
+.col h5 {
+  margin: 0 0 10px; font: 600 12px ui-monospace, Menlo, monospace;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--ink3);
+}
+
+/* pseudocode panel */
+.pseudo {
+  background: var(--code-bg); border: 1px solid var(--line); border-radius: 10px;
+  padding: 12px 0; overflow-x: auto;
+}
+.pl {
+  display: flex; gap: 10px; padding: 2.5px 14px;
+  font: 12.5px/1.7 ui-monospace, "SF Mono", Menlo, monospace;
+  color: var(--ink2); white-space: pre;
+  border-left: 3px solid transparent;
+}
+.pl .ln { color: var(--ink3); width: 18px; text-align: right; flex: none; user-select: none; }
+.pl .cm { color: var(--ink3); }
+.pl.on {
+  background: var(--v-soft); border-left-color: var(--v); color: var(--ink);
+}
+.pl.on .cm { color: var(--ink2); }
+
+/* attention tile map */
+.tilemap-box { background: var(--panel2); border-radius: 10px; padding: 14px; }
+.tilemap-grid { display: grid; grid-template-columns: 34px 1fr; grid-template-rows: 34px 1fr; gap: 4px; }
+.axis-k, .axis-q { display: grid; gap: 4px; }
+.axis-k { grid-column: 2; grid-template-columns: repeat(4, 1fr); }
+.axis-q { grid-row: 2; grid-template-rows: repeat(4, 1fr); }
+.axis-k span, .axis-q span {
+  display: flex; align-items: center; justify-content: center;
+  font: 600 11px ui-monospace, Menlo, monospace; color: var(--ink3);
+  border-radius: 5px; transition: background .15s, color .15s;
+}
+.axis-k span.on { background: var(--k); color: #fff; }
+.axis-q span.on { background: var(--q); color: #fff; }
+.tiles { grid-column: 2; grid-row: 2; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; aspect-ratio: 1; }
+.tile {
+  border-radius: 6px; background: var(--panel); border: 1px solid var(--line);
+  position: relative; transition: background .2s, border-color .2s;
+}
+.tile.done { background: var(--o-soft); border-color: transparent; }
+.tile.done::after {
+  content: ""; position: absolute; inset: 0; border-radius: 6px;
+  background: linear-gradient(135deg, transparent 46%, var(--o) 46%, var(--o) 54%, transparent 54%);
+  opacity: .5;
+}
+.tile.cur { background: var(--v); border-color: var(--v); box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--v); }
+.tilemap-note { margin-top: 12px; font-size: 12.5px; color: var(--ink3); line-height: 1.5; }
+
+/* P tile readout */
+.sblock { margin-top: 14px; }
+.sblock table { border-collapse: collapse; width: 100%; }
+.sblock td {
+  font: 11.5px ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums;
+  text-align: right; padding: 3px 6px; border: 1px solid var(--line);
+  color: var(--ink2); background: var(--panel);
+}
+.sblock caption {
+  caption-side: top; text-align: left; font: 600 11px ui-monospace, Menlo, monospace;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--ink3); padding-bottom: 6px;
+}
+
+/* SRAM panel */
+.sram {
+  background: var(--panel2); border-radius: 10px; padding: 14px;
+  border: 1px dashed var(--line);
+}
+.sram-slots { display: flex; flex-direction: column; gap: 8px; }
+.slot {
+  display: flex; align-items: center; gap: 10px; background: var(--panel);
+  border: 1px solid var(--line); border-radius: 8px; padding: 7px 12px;
+  font: 13px ui-monospace, Menlo, monospace; color: var(--ink3);
+  min-height: 38px; transition: border-color .2s, opacity .2s;
+}
+.slot .tag {
+  min-width: 34px; height: 24px; padding: 0 4px; border-radius: 5px; display: flex; align-items: center;
+  justify-content: center; font-weight: 700; font-size: 11px; color: #fff;
+  background: var(--ink3); flex: none;
+}
+.slot.empty { opacity: .45; }
+.slot.empty .tag { background: var(--line); color: var(--ink3); }
+.slot.q .tag { background: var(--q); } .slot.k .tag { background: var(--k); }
+.slot.v .tag { background: var(--v); } .slot.o .tag { background: var(--o); }
+.slot.st .tag { background: var(--ink2); }
+.slot.hbm { border-style: dashed; }
+.slot.hbm .tag { background: var(--hot); }
+.slot .lbl { color: var(--ink); font-weight: 600; }
+.slot .sub { font-size: 11.5px; }
+.slot.flash { animation: slotflash .5s ease; }
+@keyframes slotflash { 0% { border-color: var(--v); box-shadow: 0 0 0 3px var(--v-soft); } 100% { border-color: var(--line); } }
+.slot.flash-hot { animation: slotflashhot .55s ease; }
+@keyframes slotflashhot { 0% { border-color: var(--hot); box-shadow: 0 0 0 3px var(--q-soft); } 100% { border-color: var(--line); } }
+
+.counters { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.counter {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  padding: 10px 12px;
+}
+.counter .cv { font: 700 20px ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums; }
+.counter .cl { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); }
+.counter.rd .cv { color: var(--k); } .counter.wr .cv { color: var(--o); }
+
+/* state / grads panel */
+.statebox { background: var(--panel2); border-radius: 10px; padding: 14px; }
+.vecrow { margin-bottom: 12px; }
+.vecrow .vl {
+  font: 600 12px ui-monospace, Menlo, monospace; color: var(--ink2); margin-bottom: 4px;
+  display: flex; gap: 8px; align-items: baseline;
+}
+.vecrow .vl small { color: var(--ink3); font-weight: 400; }
+.vec { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+.vec span {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 5px;
+  font: 12px ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums;
+  text-align: right; padding: 4px 7px; color: var(--ink);
+}
+.gmat { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; margin-top: 4px; }
+.gmat span {
+  font: 11px ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums;
+  text-align: right; padding: 3px 6px; border-radius: 4px; background: var(--panel);
+  border: 1px solid var(--line); color: var(--ink2); transition: background .2s;
+}
+.gmat.bump span { background: var(--v-soft); color: var(--ink); }
+.gmat.fin span { border-color: var(--o); }
+.statenote {
+  margin-top: 4px; padding: 10px 12px; border-radius: 8px; background: var(--panel);
+  border: 1px solid var(--line); font: 12.5px/1.6 ui-monospace, Menlo, monospace;
+  color: var(--ink2); min-height: 56px;
+}
+.statenote b { color: var(--hot); }
+
+/* ---------- cards + footer ---------- */
+.improve { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin-top: 24px; }
+.improve .card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  padding: 16px 18px; box-shadow: var(--shadow);
+}
+.improve .card h4 { margin: 0 0 6px; font: 700 14px ui-monospace, Menlo, monospace; }
+.improve .card p { font-size: 13.5px; margin: 0; line-height: 1.6; }
+footer { padding: 40px 0 64px; color: var(--ink3); font-size: 13.5px; }
+footer a { color: var(--k); }
+.keyhint { font-size: 12.5px; color: var(--ink3); margin-top: 12px; }
+kbd {
+  font: 11px ui-monospace, Menlo, monospace; background: var(--panel2);
+  border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px;
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+  html { scroll-behavior: auto; }
+}
+</style>
+
+<nav class="topnav">
+  <div class="wrap">
+    <a href="./index.html">← Forward pass</a>
+    <span class="here">Part 2 · Backward</span>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <p class="eyebrow">FlashAttention, step by step · part 2</p>
+    <h1>The backward pass: gradients through a matrix <span class="hl">you threw away</span></h1>
+    <p class="lede">The forward pass never stored the attention weights P — that was the whole point.
+    Now training needs ∂L/∂Q, ∂L/∂K, ∂L/∂V, and every one of them involves P. The backward pass
+    rebuilds each tile of P from two small saved artifacts, exactly, and never materializes anything
+    N×N. Same deal as before: real numbers, one block at a time.</p>
+  </div>
+</header>
+
+<!-- ============ 1. WHAT BACKWARD NEEDS ============ -->
+<section id="needs">
+  <div class="wrap">
+    <span class="secno">01 · The setup</span>
+    <h2>What backward needs, and what forward actually saved</h2>
+    <p>Given the upstream gradient dO = ∂L/∂O, the chain rule through O = P·V, P = softmax(S),
+    S = Q·Kᵀ/√d demands:</p>
+    <div class="formula">
+      dV = Pᵀ·dO &nbsp;&nbsp;&nbsp; dP = dO·Vᵀ &nbsp;&nbsp;&nbsp; dS = (softmax Jacobian)·dP<br>
+      dQ = dS·K / √d &nbsp;&nbsp;&nbsp; dK = dSᵀ·Q / √d
+    </div>
+    <p>Both P and dP are N×N. Storing P in the forward pass would reintroduce the O(N²) memory and
+    HBM traffic that FlashAttention exists to avoid. Instead, the forward pass saved exactly two
+    things per head:</p>
+    <div class="saved">
+      <div class="card">
+        <h4><span class="chip o">O</span> the output</h4>
+        <div class="sz num">N × d</div>
+        <p>Needed downstream anyway — free to keep.</p>
+      </div>
+      <div class="card">
+        <h4>L = m + log ℓ</h4>
+        <div class="sz num">N values</div>
+        <p>One logsumexp per row: the running max and normalizer from the online softmax, fused
+        into a single number.</p>
+      </div>
+      <div class="card no">
+        <h4>P, the attention weights</h4>
+        <div class="sz num">N × N</div>
+        <p>Never stored. 67M floats per head at N=8192 — this is the thing we refuse to keep.</p>
+      </div>
+    </div>
+    <p><b>Recomputation.</b> L makes P cheap to rebuild. For any tile, softmax(S)ᵢⱼ =
+    e^(Sᵢⱼ − mᵢ)/ℓᵢ = e^(Sᵢⱼ − mᵢ − log ℓᵢ), so:</p>
+    <div class="formula">
+      P = exp( Q<sub>i</sub>·K<sub>j</sub>ᵀ/√d − L<sub>i</sub> ) <span class="c">— one matmul, one exp. Exact, not approximate.</span>
+    </div>
+    <p>No second softmax pass, no new max-finding, no normalization step — L already encodes both.
+    Any 4×4 tile of P can be conjured in SRAM on demand from Q<sub>i</sub>, K<sub>j</sub>, and four
+    saved scalars.</p>
+  </div>
+</section>
+
+<!-- ============ 2. THE D TRICK ============ -->
+<section id="dtrick">
+  <div class="wrap">
+    <span class="secno">02 · The second trick</span>
+    <h2>dS without the softmax Jacobian</h2>
+    <p>The Jacobian of a softmax row is the N×N matrix diag(p) − p·pᵀ. Applying it naively to dP
+    would mean another huge intermediate. But multiply it out for one row:</p>
+    <div class="formula">
+      dS = (diag(p) − p·pᵀ)·dp = p ∘ dp − p·(pᵀ·dp) = p ∘ (dp − <span class="fx">pᵀ·dp</span>)<br>
+      <span class="c">and the scalar pᵀ·dp = pᵀ·(Vᵀ·dOᵢ)... wait — rearrange: pᵀ·dp = (pᵀV)·dOᵢ = Oᵢ·dOᵢ</span>
+    </div>
+    <p>That scalar — the row's share of the Jacobian correction — collapses to a dot product of two
+    things we already have in HBM: the saved output row and its upstream gradient. Define, per row:</p>
+    <div class="formula">
+      D<sub>i</sub> = rowsum(dO<sub>i</sub> ∘ O<sub>i</sub>) <span class="c">(N scalars, precomputed in one cheap kernel before the main loop)</span><br>
+      dS = P ∘ (dP − D<sub>i</sub>) <span class="c">— elementwise; the N×N Jacobian never exists</span>
+    </div>
+    <p>So the entire backward pass reduces to tile-sized matmuls and elementwise ops, fed by
+    recomputed P tiles and one precomputed length-N vector D. Everything fits the same SRAM-resident,
+    tile-at-a-time mold as the forward pass.</p>
+  </div>
+</section>
+
+<!-- ============ 3. THE MAIN STEPPER ============ -->
+<section id="stepper">
+  <div class="wide">
+    <div class="wrap" style="padding:0">
+      <span class="secno">03 · The algorithm, live</span>
+      <h2>FlashAttention-2 backward pass, block by block</h2>
+      <p>Same toy problem as the forward page: N = 16, d = 4, block size B = 4 — but the loops
+      <b>swap roles</b>. Backward puts the <b>K/V loop outside</b>: each worker owns one
+      <span class="chip k">K</span>/<span class="chip v">V</span> column block, accumulates its
+      dK<sub>j</sub> and dV<sub>j</sub> in SRAM across all <span class="chip q">Q</span> blocks,
+      and writes them once. (dK<sub>j</sub> and dV<sub>j</sub> gather contributions from a whole
+      <i>column</i> of tiles — the exact mirror of why forward's O wanted rows.) The price: dQ now
+      gathers across the row, so workers add into it in HBM <b>atomically</b>. The pseudocode on the
+      left tracks the animation line by line.</p>
+    </div>
+
+    <div class="app">
+      <p class="app-title"><span>flash-attention-2 · backward · N=16 d=4 B=4</span><span id="loopPos" class="num"></span></p>
+
+      <div class="controls">
+        <button id="btnReset" title="Reset">⏮ Reset</button>
+        <button id="btnBack" title="Step back">‹ Back</button>
+        <button id="btnPlay" class="primary">▶ Play</button>
+        <button id="btnFwd" title="Step forward">Step ›</button>
+        <select id="speed" aria-label="Playback speed">
+          <option value="1400">Slow</option>
+          <option value="800" selected>Normal</option>
+          <option value="350">Fast</option>
+        </select>
+        <span class="spacer"></span>
+        <span class="stepctr num" id="stepCtr"></span>
+      </div>
+
+      <div class="narr" id="narr"></div>
+
+      <div class="stage">
+        <div class="col">
+          <h5>Algorithm · current line</h5>
+          <div class="pseudo" id="pseudo"></div>
+        </div>
+
+        <div class="col">
+          <h5>Tile map · swept column-major this time</h5>
+          <div class="tilemap-box">
+            <div class="tilemap-grid">
+              <div></div>
+              <div class="axis-k" id="axisK"></div>
+              <div class="axis-q" id="axisQ"></div>
+              <div class="tiles" id="tiles"></div>
+            </div>
+            <p class="tilemap-note">Forward swept these tiles row-by-row; backward sweeps
+            <b>column-by-column</b>, because the gradients being accumulated on-chip
+            (dK<sub>j</sub>, dV<sub>j</sub>) belong to columns.</p>
+          </div>
+          <div class="sblock" id="sblockWrap">
+            <table id="sblockTbl"><caption id="sblockCap">recomputed tile</caption></table>
+          </div>
+        </div>
+
+        <div class="col">
+          <h5>On-chip SRAM · resident now</h5>
+          <div class="sram">
+            <div class="sram-slots" id="sramSlots"></div>
+          </div>
+          <div class="counters">
+            <div class="counter rd"><div class="cv num" id="ctrRd">0</div><div class="cl">HBM block reads</div></div>
+            <div class="counter wr"><div class="cv num" id="ctrWr">0</div><div class="cl">HBM block writes</div></div>
+          </div>
+          <div class="counters">
+            <div class="counter"><div class="cv num" id="ctrAtomic">0</div><div class="cl">atomic adds to dQ</div></div>
+            <div class="counter"><div class="cv num">0</div><div class="cl">P tiles ever stored</div></div>
+          </div>
+        </div>
+
+        <div class="col">
+          <h5>Gradient accumulators · column block <span id="stateKj" class="num">—</span></h5>
+          <div class="statebox">
+            <div class="vecrow">
+              <div class="vl">D<small> — rows of current Q block (precomputed)</small></div>
+              <div class="vec" id="vecD"></div>
+            </div>
+            <div class="vecrow">
+              <div class="vl">dK<small>j</small> <small>— accumulating in SRAM (4×4)</small></div>
+              <div class="gmat" id="dkmat"></div>
+            </div>
+            <div class="vecrow">
+              <div class="vl">dV<small>j</small> <small>— accumulating in SRAM (4×4)</small></div>
+              <div class="gmat" id="dvmat"></div>
+            </div>
+            <div class="statenote" id="stateNote"></div>
+          </div>
+        </div>
+      </div>
+      <p class="keyhint">Keyboard: <kbd>←</kbd>/<kbd>→</kbd> step · <kbd>space</kbd> play/pause (when this panel is in view)</p>
+    </div>
+
+    <div class="wrap" style="padding:0">
+      <p style="margin-top:28px">Things to notice: the recomputed <b>P tile is bit-identical</b> to the one
+      forward discarded — L makes that a one-liner, and the "P tiles ever stored" counter stays at zero
+      across both passes. <b>dK<sub>j</sub> and dV<sub>j</sub> never touch HBM until their column is
+      finished</b> — one write each, mirroring forward's O. And every inner step ends with an
+      <b style="color:var(--hot)">atomic add</b> into dQ: with one worker per column running in parallel,
+      all four of them contribute to the same dQ<sub>i</sub> rows, so the hardware has to serialize
+      those additions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. THE TRADEOFF ============ -->
+<section id="tradeoff">
+  <div class="wrap">
+    <span class="secno">04 · The bargain</span>
+    <h2>Recomputation: paying FLOPs to dodge memory</h2>
+    <p>Backward recomputes every S and P tile that forward already computed once — genuinely extra
+    arithmetic. It's still a win, and decisively: the alternative is reading an N×N matrix back from
+    HBM, and on modern GPUs the matmul units sit idle waiting for exactly that kind of traffic.
+    FLOPs are the abundant resource; bandwidth is the scarce one.</p>
+    <div class="improve">
+      <div class="card">
+        <h4>The FLOP bill</h4>
+        <p>Standard attention backward is already ~2× forward's work (5 big matmuls — dV, dP, dQ, dK,
+        plus recompute-free S — vs forward's 2). FlashAttention adds S and P recomputation on top:
+        about 2.5× forward. Measured end-to-end, it still beats materialization.</p>
+      </div>
+      <div class="card">
+        <h4>Memory stays linear</h4>
+        <p>Backward's working set is O, L, D, dO, and the gradients — all N×d or N. Nothing N×N is
+        ever allocated in either pass, so sequence length is bounded by compute budget, not memory.</p>
+      </div>
+      <div class="card">
+        <h4>What it reaches</h4>
+        <p>FA-2's backward hits ~63% of the A100's theoretical peak FLOPs — lower than forward's
+        50–73% band's top end (the atomics and extra loads cost something), but ~2× FlashAttention-1's
+        backward.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Part 2 of <a href="./index.html">FlashAttention, step by step</a>. Built from
+    <a href="https://arxiv.org/abs/2307.08691" target="_blank" rel="noopener">FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning</a> (Tri Dao, 2023)
+    and <a href="https://arxiv.org/abs/2205.14135" target="_blank" rel="noopener">the original FlashAttention paper</a> (Dao et al., 2022).
+    All gradients in section 03 are computed live and were checked against finite differences. Educational toy sizes.
+  </div>
+</footer>
+
+<script>
+"use strict";
+/* ---------------- utilities ---------------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const f2 = x => (x>=0?" ":"")+x.toFixed(2);
+const clone2 = m => m.map(r => r.slice());
+
+/* ---------------- problem setup (identical data to the forward page) ---------------- */
+const N=16, D=4, B=4, T=N/B;
+const SCALE = 1/Math.sqrt(D);
+const rnd = mulberry32(42);
+const gauss = () => (rnd()+rnd()+rnd()+rnd()-2)*1.2;
+const Q=[],K=[],V=[];
+for(let i=0;i<N;i++){Q.push([0,0,0,0].map(gauss));K.push([0,0,0,0].map(gauss));V.push([0,0,0,0].map(gauss));}
+const rnd2 = mulberry32(7);
+const gauss2 = () => (rnd2()+rnd2()+rnd2()+rnd2()-2)*1.2;
+const dO=[];
+for(let i=0;i<N;i++)dO.push([0,0,0,0].map(gauss2));
+
+/* forward pass (full, row-wise) to recover O and L — the two saved artifacts */
+const O=[], L=[];
+for(let i=0;i<N;i++){
+  const s=[];let m=-Infinity;
+  for(let j=0;j<N;j++){let v=0;for(let k=0;k<D;k++)v+=Q[i][k]*K[j][k];v*=SCALE;s.push(v);m=Math.max(m,v);}
+  let l=0;const p=s.map(x=>{const e=Math.exp(x-m);l+=e;return e;});
+  const o=[0,0,0,0];
+  for(let j=0;j<N;j++)for(let k=0;k<D;k++)o[k]+=p[j]/l*V[j][k];
+  O.push(o);L.push(m+Math.log(l));
+}
+/* D = rowsum(dO ∘ O) */
+const Dvec = O.map((o,i)=>o.reduce((a,x,k)=>a+x*dO[i][k],0));
+
+/* ---------------- pseudocode listing ---------------- */
+const PSEUDO=[
+  'D = rowsum(dO ∘ O)        // tiny pre-kernel',
+  'for j = 0 … 3:            // one worker per col',
+  '  load Kj, Vj → SRAM',
+  '  dKj = 0,  dVj = 0       // live in SRAM',
+  '  for i = 0 … 3:',
+  '    load Qi, dOi, Li, Di',
+  '    S = Qi·Kjᵀ / √d       // recompute',
+  '    P = exp(S − Li)       // exact tile of P',
+  '    dVj += Pᵀ·dOi',
+  '    dP  = dOi·Vjᵀ',
+  '    dS  = P ∘ (dP − Di)',
+  '    dKj += dSᵀ·Qi / √d',
+  '    dQi += dS·Kj / √d     // ATOMIC, in HBM',
+  '  write dKj, dVj → HBM',
+];
+
+/* ---------------- build full trace ---------------- */
+// phases: preD, loadKV, load, recompute, grads, write
+const trace=[];
+let hbmR=0, hbmW=0, atomics=0;
+{
+  hbmR+=8; // read all dO and O blocks once for the pre-kernel
+  trace.push({ph:'preD',j:-1,i:-1,hl:[0,0],dK:null,dV:null,P:null,isS:false,hbmR,hbmW,atomics,
+    note:`<b>Preliminary kernel: D = rowsum(dO ∘ O).</b> One cheap elementwise pass over two N×d arrays produces the N scalars the softmax gradient needs — the Jacobian correction from section 02, banked before the main loop starts.`});
+}
+for(let j=0;j<T;j++){
+  let dK=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+  let dV=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+  hbmR+=2;
+  trace.push({ph:'loadKV',j,i:-1,hl:[1,3],dK:clone2(dK),dV:clone2(dV),P:null,hbmR,hbmW,atomics,
+    note:`<b>Worker ${j}: load K${j}, V${j}</b> into SRAM and zero the accumulators dK${j}, dV${j}. These four stay on-chip for the entire column sweep — the backward mirror of forward's resident Q and O<sub>acc</sub>.`});
+  for(let i=0;i<T;i++){
+    hbmR+=2;
+    trace.push({ph:'load',j,i,hl:[4,5],dK:clone2(dK),dV:clone2(dV),P:null,hbmR,hbmW,atomics,
+      note:`<b>Load Q${i}, dO${i}</b> plus the saved scalars L[${i*B}..${i*B+3}] and precomputed D[${i*B}..${i*B+3}] — 32 floats of matrix data and 8 scalars. Everything tile (${i},${j}) needs is now on-chip.`});
+    // recompute S, P
+    const S=[],P=[];
+    for(let r=0;r<B;r++){
+      const srow=[],prow=[];
+      for(let c=0;c<B;c++){
+        let s=0;for(let k=0;k<D;k++)s+=Q[i*B+r][k]*K[j*B+c][k];
+        s*=SCALE;srow.push(s);prow.push(Math.exp(s-L[i*B+r]));
+      }
+      S.push(srow);P.push(prow);
+    }
+    trace.push({ph:'recompute',j,i,hl:[6,7],dK:clone2(dK),dV:clone2(dV),P:clone2(P),hbmR,hbmW,atomics,
+      note:`<b>Recompute the tile:</b> S = Q${i}·K${j}ᵀ/√d, then P = exp(S − L) — the saved logsumexp turns re-softmaxing into a single exp. This 4×4 P tile is <i>bit-identical</i> to the one the forward pass computed and threw away.`});
+    // gradients
+    const dPt=[],dSt=[];
+    for(let r=0;r<B;r++){
+      const dprow=[],dsrow=[];
+      for(let c=0;c<B;c++){
+        let dp=0;for(let k=0;k<D;k++)dp+=dO[i*B+r][k]*V[j*B+c][k];
+        dprow.push(dp);dsrow.push(P[r][c]*(dp-Dvec[i*B+r]));
+      }
+      dPt.push(dprow);dSt.push(dsrow);
+    }
+    for(let c=0;c<B;c++)for(let k=0;k<D;k++){
+      let dv=0,dk=0;
+      for(let r=0;r<B;r++){dv+=P[r][c]*dO[i*B+r][k];dk+=dSt[r][c]*Q[i*B+r][k];}
+      dV[c][k]+=dv;dK[c][k]+=dk*SCALE;
+    }
+    atomics++;
+    hbmW++; // the atomic read-modify-write to dQ_i (counted as one block write)
+    trace.push({ph:'grads',j,i,hl:[8,12],dK:clone2(dK),dV:clone2(dV),P:clone2(dSt),isS:true,hbmR,hbmW,atomics,
+      note:`<b>Gradient update.</b> dV${j} += Pᵀ·dO${i} and, via dS = P∘(dP − D), dK${j} += dSᵀ·Q${i}/√d — both into SRAM accumulators. Then <b style="color:var(--hot)">dQ${i} += dS·K${j}/√d atomically in HBM</b>: all four column workers touch these rows, so the adds must serialize.`});
+  }
+  hbmW+=2;
+  trace.push({ph:'write',j,i:T,hl:[13,13],dK:clone2(dK),dV:clone2(dV),P:null,final:true,hbmR,hbmW,atomics,
+    note:`<b>Write dK${j}, dV${j}.</b> The whole column of tiles has contributed — the finished 4×4 gradient blocks go to HBM exactly once each, no atomics needed: no other worker ever touches columns ${j*B}–${j*B+3}.`});
+}
+
+/* ---------------- DOM ---------------- */
+const $=id=>document.getElementById(id);
+const pseudoEl=$('pseudo');
+const plEls=PSEUDO.map((line,ix)=>{
+  const d=document.createElement('div');d.className='pl';
+  const indent=line.length-line.trimStart().length;
+  const code=line.trimStart();
+  const ci=code.indexOf('//');
+  const ln=document.createElement('span');ln.className='ln';ln.textContent=ix+1;
+  const body=document.createElement('span');
+  if(ci>=0){
+    body.textContent=' '.repeat(indent)+code.slice(0,ci);
+    const cm=document.createElement('span');cm.className='cm';cm.textContent=code.slice(ci);
+    body.appendChild(cm);
+  } else {
+    body.textContent=' '.repeat(indent)+code;
+  }
+  d.appendChild(ln);d.appendChild(body);
+  pseudoEl.appendChild(d);
+  return d;
+});
+
+const tilesEl=$('tiles'), axisK=$('axisK'), axisQ=$('axisQ');
+for(let j=0;j<T;j++){const s=document.createElement('span');s.textContent='K'+j;axisK.appendChild(s);}
+for(let i=0;i<T;i++){const s=document.createElement('span');s.textContent='Q'+i;axisQ.appendChild(s);}
+const tileEls=[];
+for(let i=0;i<T;i++)for(let j=0;j<T;j++){const d=document.createElement('div');d.className='tile';d.title=`tile (${i},${j})`;tilesEl.appendChild(d);tileEls.push(d);}
+
+const SLOTS=[
+  {id:'sk', cls:'k', tag:'K'},
+  {id:'sv', cls:'v', tag:'V'},
+  {id:'sq', cls:'q', tag:'Q'},
+  {id:'sdo', cls:'st', tag:'dO'},
+  {id:'sp', cls:'st', tag:'P'},
+  {id:'sdk', cls:'k', tag:'dK'},
+  {id:'sdv', cls:'v', tag:'dV'},
+  {id:'sdq', cls:'hbm q', tag:'dQ'},
+];
+const sramWrap=$('sramSlots');
+const slotEls={};
+SLOTS.forEach(s=>{
+  const d=document.createElement('div');d.className='slot empty '+s.cls;
+  d.innerHTML=`<span class="tag">${s.tag}</span><span class="txt"><span class="lbl">—</span> <span class="sub"></span></span>`;
+  sramWrap.appendChild(d);slotEls[s.id]=d;
+});
+function setSlot(id,on,lbl,sub,flash){
+  const el=slotEls[id];
+  el.classList.toggle('empty',!on);
+  el.querySelector('.lbl').textContent=on?lbl:'—';
+  el.querySelector('.sub').textContent=on?sub:'';
+  if(flash){
+    const cl=flash==='hot'?'flash-hot':'flash';
+    el.classList.remove('flash','flash-hot');void el.offsetWidth;el.classList.add(cl);
+  }
+}
+
+const vecD=$('vecD'),dkmat=$('dkmat'),dvmat=$('dvmat');
+for(let r=0;r<B;r++)vecD.appendChild(document.createElement('span'));
+for(let r=0;r<16;r++){dkmat.appendChild(document.createElement('span'));dvmat.appendChild(document.createElement('span'));}
+
+let cur=0, playing=false, timer=null;
+const nSteps=trace.length;
+
+function render(idx){
+  cur=Math.max(0,Math.min(nSteps-1,idx));
+  const st=trace[cur];
+  // narration
+  const narr=$('narr');
+  narr.innerHTML=st.note;
+  narr.className='narr'+(
+    st.ph==='loadKV'||st.ph==='load'?' phase-load':
+    st.ph==='write'?' phase-write':
+    st.ph==='grads'?' phase-atomic':'');
+  // pseudocode highlight
+  plEls.forEach((el,ix)=>el.classList.toggle('on',ix>=st.hl[0]&&ix<=st.hl[1]));
+  // counters & position
+  $('stepCtr').textContent=`step ${cur+1} / ${nSteps}`;
+  $('loopPos').textContent=st.j<0?'pre-kernel':(st.i>=0&&st.i<T?`outer j=${st.j} · inner i=${st.i}`:`outer j=${st.j}`);
+  $('ctrRd').textContent=st.hbmR;
+  $('ctrWr').textContent=st.hbmW;
+  $('ctrAtomic').textContent=st.atomics;
+  // tiles: done count in column-major order
+  let nd=0;
+  for(let t=0;t<=cur;t++)if(trace[t].ph==='grads')nd++;
+  tileEls.forEach((el,ix)=>{
+    el.className='tile';
+    const i=Math.floor(ix/T), jj=ix%T;
+    const order=jj*T+i; // column-major
+    if(order<nd)el.classList.add('done');
+    if(st.i>=0&&st.i<T&&i===st.i&&jj===st.j&&st.ph!=='write'&&st.ph!=='preD')el.classList.add('cur');
+  });
+  [...axisK.children].forEach((el,jj)=>el.classList.toggle('on',st.j>=0&&jj===st.j&&st.ph!=='preD'));
+  [...axisQ.children].forEach((el,i)=>el.classList.toggle('on',st.i>=0&&st.i<T&&i===st.i));
+  // SRAM slots
+  const inJ=st.j>=0;
+  const inI=st.i>=0&&st.i<T;
+  setSlot('sk',inJ,'K'+st.j,'4×4 · stays all sweep', st.ph==='loadKV');
+  setSlot('sv',inJ,'V'+st.j,'4×4 · stays all sweep', st.ph==='loadKV');
+  setSlot('sq',inI,'Q'+st.i,'4×4 · this iteration', st.ph==='load');
+  setSlot('sdo',inI,'dO'+st.i,'+ L, D (8 scalars)', st.ph==='load');
+  setSlot('sp',!!st.P&&!st.isS,'P~ tile','recomputed · never stored', st.ph==='recompute');
+  setSlot('sdk',inJ,'dK'+st.j+(st.final?' ✓':' acc'),st.final?'written out':'accumulating in SRAM', st.ph==='write');
+  setSlot('sdv',inJ,'dV'+st.j+(st.final?' ✓':' acc'),st.final?'written out':'accumulating in SRAM', st.ph==='write');
+  setSlot('sdq',st.ph==='grads','dQ'+st.i,'HBM · atomic add', st.ph==='grads'?'hot':false);
+  // P / dS tile table
+  const wrap=$('sblockWrap'), tbl=$('sblockTbl');
+  if(st.P){
+    wrap.style.visibility='visible';
+    $('sblockCap').textContent=st.isS?`dS = P ∘ (dP − D) · tile (${st.i},${st.j})`:`P = exp(Q${st.i}·K${st.j}ᵀ/√d − L) · recomputed`;
+    tbl.querySelectorAll('tr').forEach(tr=>tr.remove());
+    st.P.forEach(row=>{const tr=document.createElement('tr');
+      row.forEach(v=>{const td=document.createElement('td');td.textContent=f2(v);tr.appendChild(td);});
+      tbl.appendChild(tr);});
+  } else { wrap.style.visibility='hidden'; }
+  // state panel
+  $('stateKj').textContent=inJ?'K'+st.j:'—';
+  [...vecD.children].forEach((el,r)=>{el.textContent=inI?f2(Dvec[st.i*B+r]):'—';});
+  const paintG=(matEl,M,bump)=>{
+    matEl.className='gmat'+(bump?' bump':'')+(st.final?' fin':'');
+    [...matEl.children].forEach((el,ix)=>{
+      el.textContent=M?f2(M[Math.floor(ix/4)][ix%4]):'—';
+    });
+  };
+  paintG(dkmat,st.dK,st.ph==='grads');
+  paintG(dvmat,st.dV,st.ph==='grads');
+  // state note
+  const sn=$('stateNote');
+  if(st.ph==='preD'){
+    sn.innerHTML='D is N scalars — the entire Jacobian correction, at 1/N th the cost of a row of P.';
+  } else if(st.ph==='grads'){
+    sn.innerHTML=`dK${st.j}, dV${st.j}: SRAM accumulate, no HBM.<br><b>dQ${st.i}: atomic add in HBM</b> — all 4 column workers write these rows.`;
+  } else if(st.ph==='write'){
+    sn.innerHTML=`Column ${st.j} finished: dK${st.j} and dV${st.j} each hit HBM exactly once. Compare: forward's O touched HBM once per Q block.`;
+  } else if(st.ph==='recompute'){
+    sn.innerHTML='The recomputed P tile matches the forward pass exactly — L carries both the max and the normalizer.';
+  } else {
+    sn.innerHTML='dK and dV accumulate over the column; D arrives precomputed with each Q block.';
+  }
+}
+
+function stop(){playing=false;clearTimeout(timer);$('btnPlay').textContent='▶ Play';}
+function tick(){
+  if(!playing)return;
+  if(cur>=nSteps-1){stop();return;}
+  render(cur+1);
+  timer=setTimeout(tick,+$('speed').value);
+}
+$('btnPlay').addEventListener('click',()=>{
+  if(playing){stop();return;}
+  if(cur>=nSteps-1)render(0);
+  playing=true;$('btnPlay').textContent='❚❚ Pause';
+  timer=setTimeout(tick,+$('speed').value);
+});
+$('btnFwd').addEventListener('click',()=>{stop();render(cur+1);});
+$('btnBack').addEventListener('click',()=>{stop();render(cur-1);});
+$('btnReset').addEventListener('click',()=>{stop();render(0);});
+document.addEventListener('keydown',e=>{
+  const panel=document.querySelector('#stepper .app');
+  const r=panel.getBoundingClientRect();
+  if(r.bottom<0||r.top>innerHeight)return;
+  if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;
+  if(e.key==='ArrowRight'){e.preventDefault();stop();render(cur+1);}
+  else if(e.key==='ArrowLeft'){e.preventDefault();stop();render(cur-1);}
+  else if(e.key===' '){e.preventDefault();$('btnPlay').click();}
+});
+render(0);
+</script>
