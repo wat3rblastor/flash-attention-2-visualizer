@@ -63,20 +63,11 @@ body {
 .wide { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
 
 /* ---------- nav + header ---------- */
-.topnav {
-  border-bottom: 1px solid var(--line); padding: 14px 0;
-}
-.topnav .wrap { display: flex; align-items: baseline; gap: 16px; }
-.topnav a {
-  font: 600 13px ui-monospace, "SF Mono", Menlo, monospace; color: var(--k);
-  text-decoration: none;
-}
-.topnav a:hover { text-decoration: underline; }
-.topnav .here {
-  font: 600 13px ui-monospace, "SF Mono", Menlo, monospace; color: var(--ink3);
-  margin-left: auto; letter-spacing: .08em; text-transform: uppercase;
-}
-header { padding: 56px 0 48px; border-bottom: 1px solid var(--line); }
+.sitenav { display: flex; gap: 18px; padding: 18px 0 0; font: 600 13px ui-monospace, Menlo, monospace; }
+.sitenav a { color: var(--ink2); text-decoration: none; padding: 4px 0; border-bottom: 2px solid transparent; }
+.sitenav a:hover { color: var(--ink); }
+.sitenav a.here { color: var(--q); border-bottom-color: var(--q); }
+header { padding: 44px 0 44px; border-bottom: 1px solid var(--line); }
 .eyebrow {
   font-family: ui-monospace, "SF Mono", Menlo, monospace;
   font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
@@ -336,12 +327,12 @@ kbd {
 }
 </style>
 
-<nav class="topnav">
-  <div class="wrap">
-    <a href="./index.html">← Forward pass</a>
-    <span class="here">Part 2 · Backward</span>
-  </div>
-</nav>
+<div class="wrap">
+  <nav class="sitenav" aria-label="Pages">
+    <a href="index.html">01 · Forward pass</a>
+    <a class="here" href="backward.html" aria-current="page">02 · Backward pass</a>
+  </nav>
+</div>
 
 <header>
   <div class="wrap">
