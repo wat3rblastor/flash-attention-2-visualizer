@@ -2,37 +2,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FlashAttention backward pass</title>
 <style>
+/* Dark is the default. Light applies only when the viewer explicitly picks it. */
 :root {
-  --paper: #f4f6f8;
-  --panel: #ffffff;
-  --panel2: #eaeef2;
-  --ink: #1b2430;
-  --ink2: #4a5868;
-  --ink3: #8795a5;
-  --line: #d4dbe2;
-  --q: #e8912d;
-  --v: #c75d8a;
-  --k: #3193c9;
-  --o: #3f9e63;
-  --q-soft: #e8912d2a;
-  --k-soft: #3193c92a;
-  --v-soft: #c75d8a2a;
-  --o-soft: #3f9e632a;
-  --hot: #c75d3a;
-  --code-bg: #eaeef2;
-  --shadow: 0 1px 3px rgba(20,30,45,.08), 0 4px 16px rgba(20,30,45,.06);
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #0f1319; --panel: #171d26; --panel2: #1f2732; --ink: #e6ebf1;
-    --ink2: #a8b4c2; --ink3: #6b7888; --line: #2b3542;
-    --q: #efa23f; --v: #d4719c; --k: #4aa8d8; --o: #52b077;
-    --q-soft: #efa23f26; --k-soft: #4aa8d826; --v-soft: #d4719c26; --o-soft: #52b07726;
-    --hot: #e07a52; --code-bg: #10151c;
-    --shadow: 0 1px 3px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.3);
-  }
+  color-scheme: dark;
+  --paper: #0f1319;
+  --panel: #171d26;
+  --panel2: #1f2732;
+  --ink: #e6ebf1;
+  --ink2: #a8b4c2;
+  --ink3: #6b7888;
+  --line: #2b3542;
+  --q: #efa23f;
+  --v: #d4719c;
+  --k: #4aa8d8;
+  --o: #52b077;
+  --q-soft: #efa23f26;
+  --k-soft: #4aa8d826;
+  --v-soft: #d4719c26;
+  --o-soft: #52b07726;
+  --hot: #e07a52;
+  --code-bg: #10151c;
+  --shadow: 0 1px 3px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.3);
 }
 :root[data-theme="light"] {
+  color-scheme: light;
   --paper: #f4f6f8; --panel: #ffffff; --panel2: #eaeef2; --ink: #1b2430;
   --ink2: #4a5868; --ink3: #8795a5; --line: #d4dbe2;
   --q: #e8912d; --v: #c75d8a; --k: #3193c9; --o: #3f9e63;
@@ -41,6 +34,7 @@
   --shadow: 0 1px 3px rgba(20,30,45,.08), 0 4px 16px rgba(20,30,45,.06);
 }
 :root[data-theme="dark"] {
+  color-scheme: dark;
   --paper: #0f1319; --panel: #171d26; --panel2: #1f2732; --ink: #e6ebf1;
   --ink2: #a8b4c2; --ink3: #6b7888; --line: #2b3542;
   --q: #efa23f; --v: #d4719c; --k: #4aa8d8; --o: #52b077;
