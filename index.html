@@ -19,29 +19,16 @@
   --v-soft: #c75d8a2a;
   --o-soft: #3f9e632a;
   --hot: #c75d3a;
-  --chip-ink: #ffffff;
   --code-bg: #eaeef2;
   --shadow: 0 1px 3px rgba(20,30,45,.08), 0 4px 16px rgba(20,30,45,.06);
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #0f1319;
-    --panel: #171d26;
-    --panel2: #1f2732;
-    --ink: #e6ebf1;
-    --ink2: #a8b4c2;
-    --ink3: #6b7888;
-    --line: #2b3542;
-    --q: #efa23f;
-    --v: #d4719c;
-    --k: #4aa8d8;
-    --o: #52b077;
-    --q-soft: #efa23f26;
-    --k-soft: #4aa8d826;
-    --v-soft: #d4719c26;
-    --o-soft: #52b07726;
-    --hot: #e07a52;
-    --code-bg: #10151c;
+    --paper: #0f1319; --panel: #171d26; --panel2: #1f2732; --ink: #e6ebf1;
+    --ink2: #a8b4c2; --ink3: #6b7888; --line: #2b3542;
+    --q: #efa23f; --v: #d4719c; --k: #4aa8d8; --o: #52b077;
+    --q-soft: #efa23f26; --k-soft: #4aa8d826; --v-soft: #d4719c26; --o-soft: #52b07726;
+    --hot: #e07a52; --code-bg: #10151c;
     --shadow: 0 1px 3px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.3);
   }
 }
@@ -71,96 +58,83 @@ body {
 }
 .mono, code, .num { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
 .num { font-variant-numeric: tabular-nums; }
-
 .wrap { max-width: 740px; margin: 0 auto; padding: 0 20px; }
-.wide { max-width: 1140px; margin: 0 auto; padding: 0 20px; }
+.wide { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
 
 /* ---------- nav ---------- */
-.sitenav {
-  display: flex; gap: 18px; padding: 18px 0 0;
-  font: 600 13px ui-monospace, "SF Mono", Menlo, monospace;
-}
+.sitenav { display: flex; gap: 18px; padding: 18px 0 0; font: 600 13px ui-monospace, Menlo, monospace; }
 .sitenav a { color: var(--ink2); text-decoration: none; padding: 4px 0; border-bottom: 2px solid transparent; }
 .sitenav a:hover { color: var(--ink); }
 .sitenav a.here { color: var(--q); border-bottom-color: var(--q); }
 
 /* ---------- header ---------- */
-header { padding: 48px 0 48px; border-bottom: 1px solid var(--line); }
+header { padding: 44px 0 44px; }
 .eyebrow {
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--ink3); margin: 0 0 16px;
+  font-family: ui-monospace, Menlo, monospace; font-size: 12px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink3); margin: 0 0 16px;
 }
 h1 {
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: clamp(30px, 5.5vw, 48px); font-weight: 700;
-  letter-spacing: -.03em; line-height: 1.12; margin: 0 0 20px;
-  text-wrap: balance;
+  font-family: ui-monospace, Menlo, monospace; font-size: clamp(30px, 5.5vw, 46px);
+  font-weight: 700; letter-spacing: -.03em; line-height: 1.12; margin: 0 0 20px; text-wrap: balance;
 }
 h1 .hl { color: var(--q); }
 .lede { font-size: 18px; color: var(--ink2); max-width: 62ch; margin: 0; }
 .lede a { color: var(--k); }
 
+/* ---------- part dividers ---------- */
+.partband { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--panel2); }
+.partband .inner { max-width: 740px; margin: 0 auto; padding: 26px 20px; }
+.partband .pn {
+  font: 700 12px ui-monospace, Menlo, monospace; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--q); margin: 0 0 6px;
+}
+.partband h3 {
+  margin: 0 0 6px; font: 700 clamp(19px,2.6vw,24px) ui-monospace, Menlo, monospace;
+  letter-spacing: -.02em; color: var(--ink);
+}
+.partband p { margin: 0; font-size: 14.5px; color: var(--ink2); max-width: 64ch; }
+
 /* ---------- sections ---------- */
-section { padding: 56px 0; border-bottom: 1px solid var(--line); }
+section { padding: 52px 0; border-bottom: 1px solid var(--line); }
 h2 {
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: clamp(21px, 3vw, 27px); font-weight: 700; letter-spacing: -.02em;
-  margin: 0 0 8px; text-wrap: balance;
+  font-family: ui-monospace, Menlo, monospace; font-size: clamp(20px, 3vw, 26px);
+  font-weight: 700; letter-spacing: -.02em; margin: 0 0 10px; text-wrap: balance;
 }
 .secno {
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--ink3); display: block; margin-bottom: 10px;
+  font-family: ui-monospace, Menlo, monospace; font-size: 12px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink3); display: block; margin-bottom: 10px;
 }
 p { max-width: 66ch; }
 p, li { color: var(--ink2); }
 strong, b { color: var(--ink); }
-code {
-  background: var(--code-bg); padding: 1px 6px; border-radius: 4px;
-  font-size: .88em; color: var(--ink);
-}
+code { background: var(--code-bg); padding: 1px 6px; border-radius: 4px; font-size: .88em; color: var(--ink); }
 .formula {
   background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px;
-  padding: 14px 18px; font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: 14.5px; line-height: 1.8; overflow-x: auto; color: var(--ink);
-  margin: 20px 0;
+  padding: 14px 18px; font-family: ui-monospace, Menlo, monospace; font-size: 14.5px;
+  line-height: 1.85; overflow-x: auto; color: var(--ink); margin: 20px 0;
 }
 .formula .c { color: var(--ink3); }
-
-/* ---------- legend chips ---------- */
-.chip {
-  display: inline-block; padding: 0 7px; border-radius: 4px; font-weight: 600;
-  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .85em;
+.takeaway {
+  border-left: 3px solid var(--q); background: var(--q-soft); border-radius: 0 8px 8px 0;
+  padding: 12px 16px; margin: 24px 0 0; font-size: 15px; color: var(--ink); max-width: 66ch;
 }
-.chip.q { background: var(--q); color: #fff; }
-.chip.k { background: var(--k); color: #fff; }
-.chip.v { background: var(--v); color: #fff; }
-.chip.o { background: var(--o); color: #fff; }
+.takeaway b { font-family: ui-monospace, Menlo, monospace; }
 
-/* ---------- memory hierarchy diagram ---------- */
-.memdiag { display: flex; gap: 14px; align-items: stretch; margin: 28px 0; flex-wrap: wrap; }
-.memlevel {
-  flex: 1 1 180px; background: var(--panel); border: 1px solid var(--line);
-  border-radius: 10px; padding: 16px 18px; box-shadow: var(--shadow);
-}
-.memlevel h4 { margin: 0 0 4px; font-size: 15px; font-family: ui-monospace, Menlo, monospace; }
-.memlevel .cap { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
-.memlevel .bw { font-size: 13px; color: var(--ink3); margin-top: 2px; }
-.membar { height: 6px; border-radius: 3px; margin-top: 12px; background: var(--panel2); overflow: hidden; }
-.membar i { display: block; height: 100%; border-radius: 3px; }
-.memarrow { align-self: center; color: var(--ink3); font-size: 20px; }
+.chip { display: inline-block; padding: 0 7px; border-radius: 4px; font-weight: 600;
+  font-family: ui-monospace, Menlo, monospace; font-size: .85em; }
+.chip.q { background: var(--q); color: #fff; } .chip.k { background: var(--k); color: #fff; }
+.chip.v { background: var(--v); color: #fff; } .chip.o { background: var(--o); color: #fff; }
 
-/* ---------- panel / app shell ---------- */
 .app {
   background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
-  box-shadow: var(--shadow); padding: 22px; margin-top: 28px;
+  box-shadow: var(--shadow); padding: 22px; margin-top: 26px;
 }
 .app-title {
-  font-family: ui-monospace, Menlo, monospace; font-size: 13px;
-  letter-spacing: .1em; text-transform: uppercase; color: var(--ink3);
-  margin: 0 0 14px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  font-family: ui-monospace, Menlo, monospace; font-size: 13px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink3); margin: 0 0 14px;
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
 }
+.figcap { font-size: 13px; color: var(--ink3); line-height: 1.6; margin: 14px 0 0; max-width: 70ch; }
 
 /* ---------- controls ---------- */
 .controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
@@ -175,228 +149,258 @@ button.primary { background: var(--q); border-color: var(--q); color: #fff; min-
 button:disabled { opacity: .4; cursor: default; }
 .spacer { flex: 1; }
 .stepctr { font-family: ui-monospace, Menlo, monospace; font-size: 13px; color: var(--ink3); font-variant-numeric: tabular-nums; }
-select, input[type=range] { accent-color: var(--q); }
-select {
-  font: 14px ui-monospace, Menlo, monospace; color: var(--ink);
-  background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px;
-}
+select { font: 14px ui-monospace, Menlo, monospace; color: var(--ink);
+  background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
+input[type=range] { accent-color: var(--q); }
+.slider-row { display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-end; margin-bottom: 20px; }
+.slider-row > div { flex: 1 1 200px; }
+.slider-row label { display: block; font: 600 13px ui-monospace, Menlo, monospace; color: var(--ink2); margin-bottom: 6px; }
+.slider-row label .val { color: var(--q); }
+.slider-row input[type=range] { width: 100%; }
 
-/* ---------- narration ---------- */
-.narr {
-  border-left: 3px solid var(--q); background: var(--q-soft);
-  border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 18px;
-  font-size: 15px; min-height: 68px; color: var(--ink);
+/* ---------- VIZ A: proportional matrix shapes ---------- */
+.shapes {
+  display: flex; align-items: flex-end; gap: 16px; flex-wrap: nowrap;
+  background: var(--panel2); border-radius: 10px; padding: 24px 18px;
+  overflow-x: auto; min-height: 290px;
 }
-.narr b { font-family: ui-monospace, Menlo, monospace; }
-.narr.phase-load { border-color: var(--k); background: var(--k-soft); }
-.narr.phase-write { border-color: var(--o); background: var(--o-soft); }
+.shape { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: none; }
+.shape .box { border-radius: 3px; position: relative; }
+.shape .box.strip { min-width: 2px; }
+.shape .nm { font: 700 13px ui-monospace, Menlo, monospace; color: var(--ink); white-space: nowrap; }
+.shape .dim { font: 10.5px ui-monospace, Menlo, monospace; color: var(--ink3); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.shape .cnt { font: 600 10.5px ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.shape.sq .cnt { color: var(--hot); }
+.shape.sm .cnt { color: var(--ink2); }
+.shapes .op { align-self: center; color: var(--ink3); font: 16px ui-monospace, Menlo, monospace; padding-bottom: 40px; flex: none; }
+
+/* ---------- VIZ B: tiling geometry ---------- */
+.tilegeo { background: var(--panel2); border-radius: 10px; padding: 20px; }
+.tg-grid {
+  display: grid; grid-template-columns: 76px 1fr; grid-template-rows: 76px 1fr;
+  gap: 8px; max-width: 460px; margin: 0 auto;
+}
+.tg-corner { display: flex; align-items: flex-end; justify-content: flex-end; padding: 0 6px 6px 0;
+  font: 11px ui-monospace, Menlo, monospace; color: var(--ink3); text-align: right; line-height: 1.3; }
+.tg-ktop { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; align-items: end; }
+.tg-ktop div {
+  background: var(--k); opacity: .2; border-radius: 3px; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font: 600 10px ui-monospace, Menlo, monospace; color: #fff; transition: opacity .15s;
+}
+.tg-ktop div.on { opacity: 1; }
+.tg-qleft { display: grid; grid-template-rows: repeat(4, 1fr); gap: 5px; }
+.tg-qleft div {
+  background: var(--q); opacity: .2; border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  font: 600 10px ui-monospace, Menlo, monospace; color: #fff; transition: opacity .15s;
+}
+.tg-qleft div.on { opacity: 1; }
+.tg-s { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 5px; aspect-ratio: 1; }
+.tg-s button {
+  all: unset; border-radius: 4px; background: var(--panel); border: 1px solid var(--line);
+  cursor: pointer; transition: background .15s, border-color .15s;
+}
+.tg-s button:hover { border-color: var(--ink3); }
+.tg-s button:focus-visible { outline: 2px solid var(--k); outline-offset: 1px; }
+.tg-s button.on { background: var(--q); border-color: var(--q); }
+.tg-readout {
+  margin-top: 18px; text-align: center; font: 14px ui-monospace, Menlo, monospace;
+  color: var(--ink2); min-height: 48px;
+}
+.tg-readout b { color: var(--ink); }
+.tg-sizes { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 10px; margin-top: 18px; }
+.tg-sizes div {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px;
+  font: 12px ui-monospace, Menlo, monospace; color: var(--ink3);
+}
+.tg-sizes div b { display: block; font-size: 17px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tg-sizes div.fits b { color: var(--o); }
+
+/* ---------- VIZ C: online softmax bars ---------- */
+.osbars { position: relative; background: var(--panel2); border-radius: 10px; padding: 26px 20px 14px; }
+.osbars .plot { position: relative; height: 190px; display: flex; align-items: flex-end; gap: 8px; }
+.osbars .bar { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; }
+.osbars .bar i {
+  display: block; width: 100%; border-radius: 4px 4px 0 0; background: var(--ink3); opacity: .25;
+  transition: height .45s cubic-bezier(.4,0,.2,1), background .3s, opacity .3s; height: 0;
+}
+.osbars .bar.seen i { opacity: 1; background: var(--k); }
+.osbars .bar.ismax i { background: var(--q); }
+.osbars .bar .sv {
+  font: 11.5px ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums;
+  color: var(--ink3); margin-top: 6px;
+}
+.osbars .bar.seen .sv { color: var(--ink); font-weight: 600; }
+.osbars .mline {
+  position: absolute; left: 20px; right: 20px; border-top: 2px dashed var(--q);
+  transition: bottom .45s cubic-bezier(.4,0,.2,1); pointer-events: none;
+}
+.osbars .mline span {
+  position: absolute; right: 0; top: -20px; font: 600 11px ui-monospace, Menlo, monospace;
+  color: var(--q); background: var(--panel2); padding: 0 6px;
+}
+.osbars .blk { display: flex; gap: 8px; margin-top: 4px; }
+.osbars .blk span {
+  flex: 1; text-align: center; font: 11px ui-monospace, Menlo, monospace;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ink3);
+  border-top: 1px solid var(--line); padding-top: 6px;
+}
+.os-math {
+  background: var(--code-bg); border: 1px solid var(--line); border-radius: 10px;
+  padding: 15px 18px; font: 13px/1.95 ui-monospace, Menlo, monospace; color: var(--ink2);
+  min-height: 112px; overflow-x: auto; margin-top: 16px;
+}
+.os-math b { color: var(--ink); } .os-math .fx { color: var(--hot); font-weight: 700; }
+.os-verdict { margin-top: 14px; display: none; gap: 10px; align-items: center; flex-wrap: wrap; }
+.os-verdict.show { display: flex; }
+.os-verdict .ok { background: var(--o); color: #fff; border-radius: 6px; padding: 2px 10px;
+  font: 700 13px ui-monospace, Menlo, monospace; }
+
+/* ---------- memory hierarchy ---------- */
+.memdiag { display: flex; gap: 14px; align-items: stretch; margin: 24px 0; flex-wrap: wrap; }
+.memlevel { flex: 1 1 200px; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 10px; padding: 16px 18px; box-shadow: var(--shadow); }
+.memlevel h4 { margin: 0 0 4px; font-size: 15px; font-family: ui-monospace, Menlo, monospace; }
+.memlevel .cap { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.memlevel .bw { font-size: 13px; color: var(--ink3); margin-top: 2px; }
+.membar { height: 6px; border-radius: 3px; margin-top: 12px; background: var(--panel2); overflow: hidden; }
+.membar i { display: block; height: 100%; border-radius: 3px; }
+.memarrow { align-self: center; color: var(--ink3); font-size: 20px; }
 
 /* ---------- algorithm listing ---------- */
 .algo {
   background: var(--code-bg); border: 1px solid var(--line); border-radius: 10px;
-  padding: 12px 8px; font: 11.5px/1.95 ui-monospace, "SF Mono", Menlo, monospace;
-  color: var(--ink2); overflow-x: auto;
+  padding: 12px 8px; font: 11.5px/1.95 ui-monospace, Menlo, monospace; color: var(--ink2); overflow-x: auto;
 }
-.aline { display: flex; gap: 10px; padding: 1px 8px; border-radius: 5px; white-space: pre; transition: background .15s, color .15s; }
+.aline { display: flex; gap: 10px; padding: 1px 8px; border-radius: 5px; white-space: pre;
+  transition: background .15s, color .15s; }
 .aline .ln { color: var(--ink3); opacity: .55; width: 16px; text-align: right; flex: none; user-select: none; }
 .aline .cm { color: var(--ink3); }
 .aline.on { background: var(--q-soft); color: var(--ink); box-shadow: inset 2px 0 0 var(--q); }
 .aline.on .cm { color: var(--ink2); }
 .aline b { font-weight: 700; }
 
-/* ---------- main stepper layout ---------- */
-.stage { display: grid; grid-template-columns: minmax(260px, 3fr) minmax(0, 9fr); gap: 20px; align-items: start; }
-.viz { display: grid; grid-template-columns: minmax(0,5fr) minmax(0,4fr) minmax(0,4fr); gap: 18px; }
-@media (max-width: 1020px) { .stage { grid-template-columns: 1fr; } .viz { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 680px)  { .viz { grid-template-columns: 1fr; } }
-.col h5 {
-  margin: 0 0 10px; font: 600 12px ui-monospace, Menlo, monospace;
-  letter-spacing: .12em; text-transform: uppercase; color: var(--ink3);
+/* ---------- stepper ---------- */
+.narr {
+  border-left: 3px solid var(--q); background: var(--q-soft); border-radius: 0 8px 8px 0;
+  padding: 12px 16px; margin-bottom: 18px; font-size: 15px; min-height: 64px; color: var(--ink);
 }
+.narr b { font-family: ui-monospace, Menlo, monospace; }
+.narr.phase-load { border-color: var(--k); background: var(--k-soft); }
+.narr.phase-write { border-color: var(--o); background: var(--o-soft); }
+.stage { display: grid; grid-template-columns: minmax(240px, 3fr) minmax(0, 5fr) minmax(0, 4fr); gap: 20px; align-items: start; }
+@media (max-width: 1000px) { .stage { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 680px)  { .stage { grid-template-columns: 1fr; } }
+.col h5 { margin: 0 0 10px; font: 600 12px ui-monospace, Menlo, monospace;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--ink3); }
 
-/* attention tile map */
 .tilemap-box { background: var(--panel2); border-radius: 10px; padding: 14px; }
-.tilemap-grid { display: grid; grid-template-columns: 34px 1fr; grid-template-rows: 34px 1fr; gap: 4px; }
+.tilemap-grid { display: grid; grid-template-columns: 30px 1fr; grid-template-rows: 30px 1fr; gap: 4px; }
 .axis-k, .axis-q { display: grid; gap: 4px; }
 .axis-k { grid-column: 2; grid-template-columns: repeat(4, 1fr); }
 .axis-q { grid-row: 2; grid-template-rows: repeat(4, 1fr); }
 .axis-k span, .axis-q span {
   display: flex; align-items: center; justify-content: center;
-  font: 600 11px ui-monospace, Menlo, monospace; color: var(--ink3);
-  border-radius: 5px; transition: background .15s, color .15s;
+  font: 600 10px ui-monospace, Menlo, monospace; color: var(--ink3);
+  border-radius: 4px; transition: background .15s, color .15s;
 }
 .axis-k span.on { background: var(--k); color: #fff; }
 .axis-q span.on { background: var(--q); color: #fff; }
 .tiles { grid-column: 2; grid-row: 2; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; aspect-ratio: 1; }
-.tile {
-  border-radius: 6px; background: var(--panel); border: 1px solid var(--line);
-  position: relative; transition: background .2s, border-color .2s;
-}
+.tile { border-radius: 5px; background: var(--panel); border: 1px solid var(--line); position: relative;
+  transition: background .2s, border-color .2s; }
 .tile.done { background: var(--o-soft); border-color: transparent; }
 .tile.done::after {
-  content: ""; position: absolute; inset: 0; border-radius: 6px;
-  background: linear-gradient(135deg, transparent 46%, var(--o) 46%, var(--o) 54%, transparent 54%);
-  opacity: .5;
+  content: ""; position: absolute; inset: 0; border-radius: 5px;
+  background: linear-gradient(135deg, transparent 46%, var(--o) 46%, var(--o) 54%, transparent 54%); opacity: .45;
 }
-.tile.cur { background: var(--q); border-color: var(--q); box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--q); }
-.tilemap-note { margin-top: 12px; font-size: 12.5px; color: var(--ink3); line-height: 1.5; }
+.tile.cur { background: var(--q); border-color: var(--q); box-shadow: 0 0 0 2px var(--panel2), 0 0 0 4px var(--q); }
 
-/* S/P block readout */
-.sblock { margin-top: 14px; }
-.sblock table { border-collapse: collapse; width: 100%; }
-.sblock td {
-  font: 11.5px ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums;
-  text-align: right; padding: 3px 6px; border: 1px solid var(--line);
-  color: var(--ink2); background: var(--panel); transition: background .2s;
+.sramstrip { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+.sramstrip .sl {
+  flex: 1 1 60px; border-radius: 7px; border: 1px solid var(--line); background: var(--panel);
+  padding: 7px 4px; text-align: center; font: 600 11px ui-monospace, Menlo, monospace;
+  color: var(--ink3); transition: all .2s; min-width: 54px;
 }
-.sblock td.hotcell { background: var(--q-soft); color: var(--ink); font-weight: 600; }
-.sblock caption {
-  caption-side: top; text-align: left; font: 600 11px ui-monospace, Menlo, monospace;
-  letter-spacing: .1em; text-transform: uppercase; color: var(--ink3); padding-bottom: 6px;
-}
+.sramstrip .sl.on { color: #fff; border-color: transparent; }
+.sramstrip .sl.on.q { background: var(--q); } .sramstrip .sl.on.k { background: var(--k); }
+.sramstrip .sl.on.v { background: var(--v); } .sramstrip .sl.on.o { background: var(--o); }
+.sramstrip .sl.on.s { background: var(--ink2); }
+.sramstrip .sl small { display: block; font-size: 9px; font-weight: 400; opacity: .85; margin-top: 2px; }
+.sramlbl { font: 10px ui-monospace, Menlo, monospace; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink3); margin-top: 14px; }
+.counters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+.counter { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; }
+.counter .cv { font: 700 17px ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums; }
+.counter .cl { font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink3); line-height: 1.35; }
+.counter.rd .cv { color: var(--k); } .counter.wr .cv { color: var(--o); } .counter.sp .cv { color: var(--hot); }
 
-/* SRAM panel */
-.sram {
-  background: var(--panel2); border-radius: 10px; padding: 14px;
-  border: 1px dashed var(--line);
-}
-.sram-slots { display: flex; flex-direction: column; gap: 8px; }
-.slot {
-  display: flex; align-items: center; gap: 10px; background: var(--panel);
-  border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px;
-  font: 13px ui-monospace, Menlo, monospace; color: var(--ink3);
-  min-height: 40px; transition: border-color .2s, opacity .2s;
-}
-.slot .tag {
-  width: 34px; height: 24px; border-radius: 5px; display: flex; align-items: center;
-  justify-content: center; font-weight: 700; font-size: 11px; color: #fff;
-  background: var(--ink3); flex: none;
-}
-.slot.empty { opacity: .45; }
-.slot.empty .tag { background: var(--line); color: var(--ink3); }
-.slot.q .tag { background: var(--q); } .slot.k .tag { background: var(--k); }
-.slot.v .tag { background: var(--v); } .slot.o .tag { background: var(--o); }
-.slot.st .tag { background: var(--ink2); }
-.slot .lbl { color: var(--ink); font-weight: 600; }
-.slot .sub { font-size: 11.5px; }
-.slot.flash { animation: slotflash .5s ease; }
-@keyframes slotflash { 0% { border-color: var(--q); box-shadow: 0 0 0 3px var(--q-soft); } 100% { border-color: var(--line); } }
-
-.counters { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
-.counter {
-  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
-  padding: 10px 12px;
-}
-.counter .cv { font: 700 20px ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums; }
-.counter .cl { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); }
-.counter.rd .cv { color: var(--k); } .counter.wr .cv { color: var(--o); }
-
-/* state / stats panel */
 .statebox { background: var(--panel2); border-radius: 10px; padding: 14px; }
 .vecrow { margin-bottom: 12px; }
-.vecrow .vl {
-  font: 600 12px ui-monospace, Menlo, monospace; color: var(--ink2); margin-bottom: 4px;
-  display: flex; gap: 8px; align-items: baseline;
-}
+.vecrow .vl { font: 600 12px ui-monospace, Menlo, monospace; color: var(--ink2); margin-bottom: 5px;
+  display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
 .vecrow .vl small { color: var(--ink3); font-weight: 400; }
 .vec { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
 .vec span {
   background: var(--panel); border: 1px solid var(--line); border-radius: 5px;
-  font: 12px ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums;
-  text-align: right; padding: 4px 7px; color: var(--ink); transition: background .2s;
+  font: 11.5px ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums;
+  text-align: right; padding: 4px 6px; color: var(--ink); transition: background .2s;
 }
-.vec span.bump { background: var(--q-soft); font-weight: 700; }
-.vec span.oc { border-color: var(--o); }
+.vec span.bump { background: var(--q-soft); font-weight: 700; box-shadow: inset 0 0 0 1px var(--q); }
+.heat { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+.heat span {
+  font: 11px ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums;
+  text-align: right; padding: 4px 6px; border-radius: 4px; color: var(--ink);
+  border: 1px solid var(--line); transition: background .25s;
+}
 .scale-note {
-  margin-top: 4px; padding: 10px 12px; border-radius: 8px; background: var(--panel);
-  border: 1px solid var(--line); font: 12.5px/1.6 ui-monospace, Menlo, monospace;
-  color: var(--ink2); min-height: 66px;
+  margin-top: 10px; padding: 10px 12px; border-radius: 8px; background: var(--panel);
+  border: 1px solid var(--line); font: 12px/1.6 ui-monospace, Menlo, monospace;
+  color: var(--ink2); min-height: 60px;
 }
 .scale-note b { color: var(--hot); }
-.omat { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; margin-top: 4px; }
-.omat span {
-  font: 11px ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums;
-  text-align: right; padding: 3px 6px; border-radius: 4px; background: var(--panel);
-  border: 1px solid var(--line); color: var(--ink2);
-}
 
-/* ---------- online softmax demo ---------- */
-.os-scores { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; margin: 18px 0 6px; }
-.os-scores span {
-  text-align: center; padding: 10px 4px; border-radius: 8px;
-  font: 600 15px ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums;
-  background: var(--panel2); border: 1px solid var(--line); color: var(--ink3);
-  transition: all .25s;
-}
-.os-scores span.seen { background: var(--k-soft); border-color: var(--k); color: var(--ink); }
-.os-scores span.ismax { background: var(--q); border-color: var(--q); color: #fff; }
-.os-chunklbl { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 18px; }
-.os-chunklbl span { text-align: center; font: 11px ui-monospace, Menlo, monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--ink3); }
-.os-math {
-  background: var(--code-bg); border: 1px solid var(--line); border-radius: 10px;
-  padding: 16px 18px; font: 13.5px/2 ui-monospace, Menlo, monospace;
-  color: var(--ink2); min-height: 150px; overflow-x: auto;
-}
-.os-math b { color: var(--ink); } .os-math .fx { color: var(--hot); font-weight: 700; }
-.os-verdict { margin-top: 14px; display: none; gap: 10px; align-items: center; }
-.os-verdict.show { display: flex; }
-.os-verdict .ok {
-  background: var(--o); color: #fff; border-radius: 6px; padding: 2px 10px;
-  font: 700 13px ui-monospace, Menlo, monospace;
-}
-
-/* ---------- FA1 vs FA2 race ---------- */
+/* ---------- race ---------- */
 .race { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 18px; }
 @media (max-width: 680px) { .race { grid-template-columns: 1fr; } }
 .race-side { background: var(--panel2); border-radius: 10px; padding: 16px; }
 .race-side h4 { margin: 0 0 2px; font: 700 15px ui-monospace, Menlo, monospace; }
 .race-side .sub { font-size: 12.5px; color: var(--ink3); margin-bottom: 12px; }
-.race-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; aspect-ratio: 1; max-width: 240px; }
-.race-grid i {
-  border-radius: 5px; background: var(--panel); border: 1px solid var(--line);
-  transition: background .15s;
-}
+.race-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; aspect-ratio: 1; max-width: 220px; }
+.race-grid i { border-radius: 5px; background: var(--panel); border: 1px solid var(--line); transition: background .15s; }
 .race-grid i.rdone { background: var(--k-soft); border-color: transparent; }
 .race-grid i.rcur { background: var(--q); border-color: var(--q); }
 .race-stat { margin-top: 14px; font: 13px ui-monospace, Menlo, monospace; color: var(--ink2); }
 .race-stat .big { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--hot); }
 .race-stat .big.good { color: var(--o); }
+.improve { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin-top: 24px; }
+.improve .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  padding: 16px 18px; box-shadow: var(--shadow); }
+.improve .card h4 { margin: 0 0 6px; font: 700 14px ui-monospace, Menlo, monospace; }
+.improve .card p { font-size: 13.5px; margin: 0; line-height: 1.6; }
 
-/* ---------- traffic sandbox ---------- */
-.sand-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 20px 0; }
-@media (max-width: 680px) { .sand-controls { grid-template-columns: 1fr; } }
-.sand-controls label { display: block; font: 600 13px ui-monospace, Menlo, monospace; color: var(--ink2); margin-bottom: 6px; }
-.sand-controls label .val { color: var(--q); }
-.sand-controls input[type=range] { width: 100%; }
-.tbars { display: flex; flex-direction: column; gap: 16px; margin: 24px 0 8px; }
-.tbar .tl { display: flex; justify-content: space-between; font: 600 13px ui-monospace, Menlo, monospace; margin-bottom: 5px; }
+/* ---------- traffic bars ---------- */
+.tbars { display: flex; flex-direction: column; gap: 16px; margin: 22px 0 8px; }
+.tbar .tl { display: flex; justify-content: space-between; font: 600 13px ui-monospace, Menlo, monospace;
+  margin-bottom: 5px; gap: 10px; flex-wrap: wrap; }
 .tbar .tl .bytes { color: var(--ink2); font-weight: 400; font-variant-numeric: tabular-nums; }
 .tbar .track { height: 26px; background: var(--panel2); border-radius: 6px; overflow: hidden; }
 .tbar .fill { height: 100%; border-radius: 6px 4px 4px 6px; min-width: 3px; transition: width .3s ease; }
 .tbar.std .fill { background: var(--ink3); }
 .tbar.fla .fill { background: var(--o); }
-.ratio-tile {
-  margin-top: 20px; background: var(--o-soft); border: 1px solid var(--o);
-  border-radius: 10px; padding: 16px 20px; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
-}
+.ratio-tile { margin-top: 20px; background: var(--o-soft); border: 1px solid var(--o); border-radius: 10px;
+  padding: 16px 20px; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
 .ratio-tile .rv { font: 700 34px ui-monospace, Menlo, monospace; color: var(--o); font-variant-numeric: tabular-nums; }
 .ratio-tile .rl { color: var(--ink2); font-size: 14px; }
 
-/* ---------- misc ---------- */
-.improve { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin-top: 24px; }
-.improve .card {
-  background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
-  padding: 16px 18px; box-shadow: var(--shadow);
-}
-.improve .card h4 { margin: 0 0 6px; font: 700 14px ui-monospace, Menlo, monospace; }
-.improve .card p { font-size: 13.5px; margin: 0; line-height: 1.6; }
 footer { padding: 40px 0 64px; color: var(--ink3); font-size: 13.5px; }
 footer a { color: var(--k); }
 .keyhint { font-size: 12.5px; color: var(--ink3); margin-top: 12px; }
-kbd {
-  font: 11px ui-monospace, Menlo, monospace; background: var(--panel2);
-  border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px;
-}
+kbd { font: 11px ui-monospace, Menlo, monospace; background: var(--panel2); border: 1px solid var(--line);
+  border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px; }
+.nextlink { display: inline-block; margin-top: 8px; color: var(--k); font-weight: 600; }
+
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
   html { scroll-behavior: auto; }
@@ -409,83 +413,225 @@ kbd {
     <a href="backward.html">02 · Backward pass →</a>
   </nav>
 </div>
+
 <header>
   <div class="wrap">
     <p class="eyebrow">An interactive walkthrough · FlashAttention-2 (Dao, 2023)</p>
     <h1>Attention is <span class="hl">memory-bound</span>.<br>FlashAttention fixes the memory, not the math.</h1>
-    <p class="lede">Exact attention — same output, no approximation — computed without ever materializing
-    the N×N attention matrix in GPU memory. This page walks the algorithm from
-    <a href="https://arxiv.org/abs/2307.08691" target="_blank" rel="noopener">the FlashAttention-2 paper</a>
-    one block at a time, with real numbers you can step through.</p>
+    <p class="lede">Exact attention — same output, no approximation — computed without ever building the
+    N×N attention matrix. This page covers the four things you need to know first, then walks the
+    algorithm line by line with every number computed live. Based on
+    <a href="https://arxiv.org/abs/2307.08691" target="_blank" rel="noopener">the FlashAttention-2 paper</a>.</p>
   </div>
 </header>
 
-<!-- ============ 1. THE PROBLEM ============ -->
-<section id="problem">
-  <div class="wrap">
-    <span class="secno">01 · The problem</span>
-    <h2>The N×N matrix doesn't fit where the compute lives</h2>
-    <p>Standard attention computes, for each head:</p>
-    <div class="formula">
-      S = Q·Kᵀ <span class="c">(N×N scores)</span> &nbsp;→&nbsp; P = softmax(S) <span class="c">(N×N weights)</span> &nbsp;→&nbsp; O = P·V <span class="c">(N×d output)</span>
-    </div>
-    <p>The trouble is the intermediates. At sequence length N = 8192, <b>S</b> and <b>P</b> are each
-    8192 × 8192 ≈ <b>67 million floats per head</b>. A GPU has two kinds of memory to put them in:</p>
+<div class="partband">
+  <div class="inner">
+    <p class="pn">Part one</p>
+    <h3>Background</h3>
+    <p>Four ideas. You know the attention formula already — what you need on top of it is the
+    <i>shape</i> of the intermediates, where a GPU can physically put them, how to cut a matmul into
+    blocks, and the one trick that lets softmax be computed in pieces. Then the algorithm reads like
+    a consequence.</p>
+  </div>
+</div>
 
-    <div class="memdiag" role="img" aria-label="GPU memory hierarchy: SRAM is tiny but roughly 10 times faster than HBM">
+<!-- ============ BG 1 · SHAPES ============ -->
+<section id="shapes">
+  <div class="wrap">
+    <span class="secno">Background 01 · The shapes</span>
+    <h2>Two of attention's four matrices are N×N</h2>
+    <p>Attention is three steps, and the middle two produce something much bigger than what goes in:</p>
+    <div class="formula">
+      S = Q·Kᵀ / √d <span class="c">N×N</span> &nbsp;→&nbsp; P = softmax(S) <span class="c">N×N</span> &nbsp;→&nbsp; O = P·V <span class="c">N×d</span>
+    </div>
+    <p>Q, K, V and O are all <b>N×d</b> — long and thin, since the head dimension d is small (typically
+    64 or 128) and fixed. S and P are <b>N×N</b> — square, and growing quadratically. Drag N and watch
+    what happens to their relative size (drawn to scale):</p>
+
+    <div class="app">
+      <p class="app-title"><span>matrix footprints · drawn to scale · d = 64, fp16</span></p>
+      <div class="slider-row">
+        <div>
+          <label for="slShapeN">Sequence length N = <span class="val num" id="lblShapeN">2048</span></label>
+          <input type="range" id="slShapeN" min="9" max="14" step="1" value="11" aria-label="Sequence length (power of two)">
+        </div>
+      </div>
+      <div class="shapes" id="shapesViz" role="img" aria-label="Proportional sizes of attention's matrices: Q, K and V are thin N-by-d strips while S and P are large N-by-N squares">
+        <div class="shape sm"><div class="box strip" id="shQ"></div><div class="nm">Q</div><div class="dim" id="dimQ"></div><div class="cnt" id="cntQ"></div></div>
+        <div class="shape sm"><div class="box strip" id="shK"></div><div class="nm">K</div><div class="dim" id="dimK"></div><div class="cnt" id="cntK"></div></div>
+        <div class="shape sm"><div class="box strip" id="shV"></div><div class="nm">V</div><div class="dim" id="dimV"></div><div class="cnt" id="cntV"></div></div>
+        <div class="op">→</div>
+        <div class="shape sq"><div class="box" id="shS"></div><div class="nm">S, then P</div><div class="dim" id="dimS"></div><div class="cnt" id="cntS"></div></div>
+        <div class="op">→</div>
+        <div class="shape sm"><div class="box strip" id="shO"></div><div class="nm">O</div><div class="dim" id="dimO"></div><div class="cnt" id="cntO"></div></div>
+      </div>
+      <p class="figcap" id="shapesCap"></p>
+    </div>
+
+    <div class="takeaway"><b>Takeaway:</b> the inputs and the output are linear in N. Only the two
+    intermediates are quadratic — so if you could avoid ever holding S and P whole, attention's
+    memory footprint would be linear. That is exactly what FlashAttention does.</div>
+  </div>
+</section>
+
+<!-- ============ BG 2 · MEMORY ============ -->
+<section id="memory">
+  <div class="wrap">
+    <span class="secno">Background 02 · Where matrices live</span>
+    <h2>A GPU has a small fast memory and a big slow one</h2>
+    <p>"Memory" on a GPU is two very different things, and the gap between them is the whole story:</p>
+
+    <div class="memdiag" role="img" aria-label="GPU memory hierarchy: SRAM is about 192 kilobytes but roughly ten times faster than the 40 to 80 gigabytes of HBM">
       <div class="memlevel">
         <h4>SRAM <span style="color:var(--ink3)">(on-chip, per SM)</span></h4>
         <div class="cap num">192 KB</div>
-        <div class="bw">≈ 19 TB/s on an A100 — right next to the compute units</div>
+        <div class="bw">≈ 19 TB/s on an A100 — sits right next to the compute units</div>
         <div class="membar"><i style="width:100%;background:var(--o)"></i></div>
       </div>
       <div class="memarrow">⇆</div>
       <div class="memlevel">
         <h4>HBM <span style="color:var(--ink3)">(off-chip DRAM)</span></h4>
         <div class="cap num">40–80 GB</div>
-        <div class="bw">≈ 1.5–2 TB/s — big, but ~10× slower to reach</div>
+        <div class="bw">≈ 1.5–2 TB/s — roomy, but ~10× slower to reach</div>
         <div class="membar"><i style="width:10%;background:var(--hot)"></i></div>
       </div>
     </div>
 
-    <p>S and P only fit in HBM. So the standard kernel writes 67M scores out to slow memory, reads
-    them back for the softmax, writes the weights out again, and reads them back for P·V. The GPU's
-    matmul units spend most of their time <b>waiting on memory traffic</b>, not multiplying.</p>
-    <p><b>FlashAttention's move:</b> cut Q, K, V into blocks small enough that a block of each —
-    plus a running output block — fits in SRAM at once. Compute attention tile by tile, keep every
-    intermediate on-chip, and never write S or P to HBM at all. The only obstacle is the softmax,
-    which normally needs a whole row before it can normalize anything. Section 03 shows the trick
-    that removes that obstacle; first, watch the algorithm run.</p>
+    <p>At N = 8192 in fp16, one head's S matrix is <b>134 MB</b>. SRAM is 192 KB. It is off by roughly
+    <b>700×</b> — S has no choice but to live in HBM. So the standard kernel writes 67M scores out to
+    slow memory, reads them back to softmax them, writes the weights out, and reads them back again for
+    P·V. Four round trips through the slow path, moving data that is only ever used once.</p>
+
+    <p>Meanwhile the tensor cores that do the actual multiplying sit idle waiting. That's what
+    <b>memory-bound</b> means: the bottleneck isn't arithmetic, it's bandwidth. Making attention faster
+    is a matter of moving less, not computing less.</p>
+
+    <div class="takeaway"><b>Takeaway:</b> any plan that writes an N×N matrix to HBM has already lost.
+    The goal is to keep every intermediate on-chip — which means working on pieces small enough to fit
+    in 192 KB.</div>
   </div>
 </section>
 
-<!-- ============ 2. THE MAIN STEPPER ============ -->
-<section id="stepper">
+<!-- ============ BG 3 · TILING ============ -->
+<section id="tiling">
+  <div class="wrap">
+    <span class="secno">Background 03 · Tiling</span>
+    <h2>A matmul can be computed one tile at a time</h2>
+    <p>Cut the N rows of Q into blocks of B rows: Q₀, Q₁, … Do the same to K and V. Now a single
+    <b>B×B tile</b> of S is just one small matrix product:</p>
+    <div class="formula">S<sub>ij</sub> = Q<sub>i</sub> · K<sub>j</sub>ᵀ / √d <span class="c">— needs only block i of Q and block j of K</span></div>
+    <p>This is ordinary matmul blocking, nothing specific to attention yet. The important part is what
+    it costs: computing tile (i, j) requires <b>only two B×d blocks</b> on chip, never the full matrices.
+    Click a tile to see where it comes from:</p>
+
+    <div class="app">
+      <p class="app-title"><span>tile geometry · N = 16, B = 4 → a 4×4 grid of tiles</span></p>
+      <div class="tilegeo">
+        <div class="tg-grid">
+          <div class="tg-corner">blocks of<br>K ↓</div>
+          <div class="tg-ktop" id="tgK"></div>
+          <div class="tg-qleft" id="tgQ"></div>
+          <div class="tg-s" id="tgS"></div>
+        </div>
+        <p class="tg-readout" id="tgOut"></p>
+      </div>
+      <div class="tg-sizes" id="tgSizes">
+        <div><b class="num">16 KB</b>Q block (128×64, fp16)</div>
+        <div><b class="num">16 KB</b>K block</div>
+        <div><b class="num">16 KB</b>V block</div>
+        <div class="fits"><b class="num">32 KB</b>S tile (128×128) — total fits in 192 KB</div>
+      </div>
+      <p class="figcap">Real kernels use B ≈ 128, not 4. The sizes above are for that realistic block
+      size: four blocks plus the output accumulator comfortably fit on-chip, which is what sets B in
+      practice — blocks are chosen as large as SRAM allows.</p>
+    </div>
+
+    <div class="takeaway"><b>Takeaway:</b> S never has to exist all at once. One tile at a time is
+    enough — <i>if</i> you can also apply softmax one tile at a time. That's the one remaining
+    obstacle, and it's the next section.</div>
+  </div>
+</section>
+
+<!-- ============ BG 4 · ONLINE SOFTMAX ============ -->
+<section id="softmax">
+  <div class="wrap">
+    <span class="secno">Background 04 · Online softmax</span>
+    <h2>Softmax can be computed in pieces, exactly</h2>
+    <p>Softmax is what makes attention resist tiling. For one row of scores it is</p>
+    <div class="formula">softmax(s)<sub>i</sub> = e^(s<sub>i</sub> − m) / Σ<sub>j</sub> e^(s<sub>j</sub> − m)&nbsp;&nbsp;<span class="c">where m = max(s), subtracted for numerical stability</span></div>
+    <p>Both m and the denominator depend on the <b>entire row</b>. If you only have the first block of
+    scores, you don't know the max yet, and you don't know the sum — so you can't produce a final
+    weight for anything. A tile-at-a-time kernel seems impossible.</p>
+    <p>The way out is to keep two running statistics per row and <b>repair the past</b> when a bigger
+    score shows up later:</p>
+    <div class="formula">
+      m′ = max(m, max of new block)<br>
+      α = <span style="color:var(--hot)">e^(m − m′)</span> <span class="c">— correction factor for everything already accumulated</span><br>
+      ℓ′ = α·ℓ + Σ e^(s<sub>i</sub> − m′)
+    </div>
+    <p>One row, eight scores, arriving in two blocks of four. Bar height is each score's weight
+    e^(s − m); watch what the second block does to the first:</p>
+
+    <div class="app">
+      <p class="app-title"><span>online softmax · one row · weights e^(s − m)</span></p>
+      <div class="controls">
+        <button id="osReset">⏮ Reset</button>
+        <button id="osStep" class="primary">Process block 1 ›</button>
+      </div>
+      <div class="osbars">
+        <div class="plot" id="osPlot"></div>
+        <div class="mline" id="osMline" style="bottom:0"><span id="osMlbl"></span></div>
+        <div class="blk"><span>block 1</span><span>block 2</span></div>
+      </div>
+      <div class="os-math" id="osMath"></div>
+      <div class="os-verdict" id="osVerdict">
+        <span class="ok">EXACT</span>
+        <span style="color:var(--ink2);font-size:14px">Identical to a two-pass softmax over all 8 scores, to machine precision — this is why FlashAttention is exact rather than an approximation.</span>
+      </div>
+    </div>
+
+    <div class="takeaway"><b>Takeaway:</b> the rescale by α is the entire trick. It costs one multiply
+    and it makes block-wise softmax mathematically identical to the real thing. The same α also
+    multiplies the output accumulator, since every term already added to it carries the stale max.</div>
+  </div>
+</section>
+
+<div class="partband">
+  <div class="inner">
+    <p class="pn">Part two</p>
+    <h3>The algorithm</h3>
+    <p>Everything above assembles into one loop nest. Tiling says you can work on a B×B piece of S at
+    a time; online softmax says you can fold each piece into the output immediately and still be exact;
+    the memory hierarchy says to do all of it without touching HBM in between.</p>
+  </div>
+</div>
+
+<!-- ============ THE ALGORITHM ============ -->
+<section id="algorithm">
   <div class="wide">
     <div class="wrap" style="padding:0">
-      <span class="secno">02 · The algorithm, live</span>
-      <h2>The whole forward pass is thirteen lines</h2>
-      <p>You know the formula — O = softmax(QKᵀ/√d)·V. Here is the complete algorithm that computes it
-      without materializing anything N×N. Setup: split the N rows of Q into blocks Q₀…Q<sub>T−1</sub>
-      of B rows each, and likewise K and V into column blocks; one worker (thread block) runs the loop
-      below for its own <span class="chip q">Q</span> block, holding O, m, ℓ in registers the entire
-      time. The listing on the left is the real control flow — press play and watch the current line
-      execute, on a toy problem small enough to see every number: N = 16, d = 4, B = 4, so T = 4 and
-      the attention matrix is a 4×4 grid of tiles.</p>
+      <span class="secno">The forward pass</span>
+      <h2>Thirteen lines, and you've seen the reason for each one</h2>
+      <p>One worker handles one <span class="chip q">Q</span> block: it loads that block once, sweeps
+      across every <span class="chip k">K</span>/<span class="chip v">V</span> block, and keeps its
+      output accumulator <span class="chip o">O</span> plus the statistics m and ℓ in registers for the
+      whole sweep. Nothing N×N is ever written anywhere. Press play — the highlighted line is the one
+      executing, and every number is computed live on a toy problem small enough to read:
+      N = 16, d = 4, B = 4.</p>
     </div>
 
     <div class="app">
       <p class="app-title"><span>flash-attention-2 · forward · N=16 d=4 B=4</span><span id="loopPos" class="num"></span></p>
-
       <div class="controls">
         <button id="btnReset" title="Reset">⏮ Reset</button>
         <button id="btnBack" title="Step back">‹ Back</button>
         <button id="btnPlay" class="primary">▶ Play</button>
         <button id="btnFwd" title="Step forward">Step ›</button>
         <select id="speed" aria-label="Playback speed">
-          <option value="1400">Slow</option>
-          <option value="800" selected>Normal</option>
-          <option value="350">Fast</option>
+          <option value="1500">Slow</option>
+          <option value="850" selected>Normal</option>
+          <option value="380">Fast</option>
         </select>
         <span class="spacer"></span>
         <span class="stepctr num" id="stepCtr"></span>
@@ -495,26 +641,27 @@ kbd {
 
       <div class="stage">
         <div class="col">
-          <h5>Algorithm · FA-2 forward (one worker)</h5>
+          <h5>Algorithm · one worker</h5>
           <div class="algo" id="algo" aria-label="FlashAttention-2 forward pseudocode">
             <div class="aline" data-l="1"><span class="ln">1</span><span><b>for</b> i = 0 … T−1:</span></div>
             <div class="aline" data-l="2"><span class="ln">2</span><span>  load Q<sub>i</sub>        <span class="cm">HBM→SRAM</span></span></div>
-            <div class="aline" data-l="3"><span class="ln">3</span><span>  m ← −∞;  ℓ ← 0;  O ← 0</span></div>
+            <div class="aline" data-l="3"><span class="ln">3</span><span>  m ← −∞; ℓ ← 0; O ← 0</span></div>
             <div class="aline" data-l="4"><span class="ln">4</span><span>  <b>for</b> j = 0 … T−1:</span></div>
             <div class="aline" data-l="5"><span class="ln">5</span><span>    load K<sub>j</sub>, V<sub>j</sub>  <span class="cm">HBM→SRAM</span></span></div>
             <div class="aline" data-l="6"><span class="ln">6</span><span>    S ← Q<sub>i</sub>·K<sub>j</sub>ᵀ / √d</span></div>
             <div class="aline" data-l="7"><span class="ln">7</span><span>    m′ ← max(m, rowmax S)</span></div>
             <div class="aline" data-l="8"><span class="ln">8</span><span>    P ← exp(S − m′)</span></div>
-            <div class="aline" data-l="9"><span class="ln">9</span><span>    α ← exp(m − m′) <span class="cm">◂ fix past</span></span></div>
+            <div class="aline" data-l="9"><span class="ln">9</span><span>    α ← exp(m − m′)</span></div>
             <div class="aline" data-l="10"><span class="ln">10</span><span>    ℓ ← α·ℓ + rowsum P</span></div>
             <div class="aline" data-l="11"><span class="ln">11</span><span>    O ← α·O + P·V<sub>j</sub>; m←m′</span></div>
             <div class="aline" data-l="12"><span class="ln">12</span><span>  O ← O/ℓ;  L ← m + log ℓ</span></div>
             <div class="aline" data-l="13"><span class="ln">13</span><span>  write O<sub>i</sub>, L<sub>i</sub> <span class="cm">SRAM→HBM</span></span></div>
           </div>
+          <p class="figcap">Line 12's L is the logsumexp — the backward pass needs it to rebuild P.</p>
         </div>
-        <div class="viz">
+
         <div class="col">
-          <h5>Attention tile map · S = Q·Kᵀ (never stored!)</h5>
+          <h5>The N×N matrix, tile by tile</h5>
           <div class="tilemap-box">
             <div class="tilemap-grid">
               <div></div>
@@ -522,112 +669,117 @@ kbd {
               <div class="axis-q" id="axisQ"></div>
               <div class="tiles" id="tiles"></div>
             </div>
-            <p class="tilemap-note">Each tile is a 4×4 block of the 16×16 attention matrix. It is
-            computed in SRAM, folded into the output, and <b>discarded</b> — struck-through tiles
-            were never written to HBM.</p>
+            <p class="sramlbl">On-chip right now</p>
+            <div class="sramstrip" id="sramStrip"></div>
+            <div class="counters">
+              <div class="counter rd"><div class="cv num" id="ctrRd">0</div><div class="cl">block reads</div></div>
+              <div class="counter wr"><div class="cv num" id="ctrWr">0</div><div class="cl">block writes</div></div>
+              <div class="counter sp"><div class="cv num" id="ctrSP">0</div><div class="cl">S/P to HBM</div></div>
+            </div>
           </div>
-          <div class="sblock" id="sblockWrap">
-            <table id="sblockTbl"><caption id="sblockCap">current tile scores</caption></table>
-          </div>
+          <p class="figcap">Struck-through tiles were computed, used, and thrown away — they existed only
+          in SRAM. The third counter is the one that matters: it never leaves zero.</p>
         </div>
 
         <div class="col">
-          <h5>On-chip SRAM · what's resident right now</h5>
-          <div class="sram">
-            <div class="sram-slots" id="sramSlots"></div>
-          </div>
-          <div class="counters">
-            <div class="counter rd"><div class="cv num" id="ctrRd">0</div><div class="cl">HBM block reads</div></div>
-            <div class="counter wr"><div class="cv num" id="ctrWr">0</div><div class="cl">HBM block writes</div></div>
-          </div>
-          <div class="counters">
-            <div class="counter"><div class="cv num" id="ctrStd">80</div><div class="cl">standard attn would need</div></div>
-            <div class="counter"><div class="cv num" id="ctrSP">0</div><div class="cl">S/P tiles written to HBM</div></div>
-          </div>
-        </div>
-
-        <div class="col">
-          <h5>Per-row running state · Q block <span id="stateQi" class="num">—</span></h5>
+          <h5>Running state · Q block <span id="stateQi" class="num">—</span></h5>
           <div class="statebox">
             <div class="vecrow">
-              <div class="vl">m <small>— running row max (one per row)</small></div>
+              <div class="vl">P tile <small>— weights, shaded by magnitude</small></div>
+              <div class="heat" id="heatP"></div>
+            </div>
+            <div class="vecrow">
+              <div class="vl">m <small>— running row max</small></div>
               <div class="vec" id="vecM"></div>
             </div>
             <div class="vecrow">
-              <div class="vl">ℓ <small>— running sum of exp(s − m)</small></div>
+              <div class="vl">ℓ <small>— running Σ e^(s−m)</small></div>
               <div class="vec" id="vecL"></div>
             </div>
             <div class="vecrow">
-              <div class="vl">O<small>acc</small> <small>— unnormalized output (4×4)</small></div>
-              <div class="omat" id="omat"></div>
+              <div class="vl">O<small>acc</small> <small>— unnormalized output, row 0</small></div>
+              <div class="vec" id="vecO"></div>
             </div>
             <div class="scale-note" id="scaleNote"></div>
           </div>
-        </div>
         </div>
       </div>
       <p class="keyhint">Keyboard: <kbd>←</kbd>/<kbd>→</kbd> step · <kbd>space</kbd> play/pause (when this panel is in view)</p>
     </div>
 
     <div class="wrap" style="padding:0">
-      <p style="margin-top:28px">Things to notice as it runs: the <b>S tile appears and disappears</b> — the
-      "S/P tiles written to HBM" counter stays at zero forever. When a new K block contains a larger score
-      than anything seen so far, the running max m jumps, and everything already accumulated gets
-      <b style="color:var(--hot)">rescaled</b> by one multiply — that's the online softmax at work. And
-      <span class="chip o">O</span> touches HBM exactly once per Q block, at the very end.</p>
+      <p style="margin-top:28px">Three things are worth watching for. The <b>P tile appears and
+      disappears</b> every iteration — that's the N×N matrix, existing one tile at a time. The
+      <b>α rescale</b> fires whenever a block brings a new row maximum, repairing everything already
+      accumulated with a single multiply. And <span class="chip o">O</span> touches HBM exactly
+      <b>once per Q block</b>, at line 13.</p>
     </div>
   </div>
 </section>
 
-<!-- ============ 3. ONLINE SOFTMAX ============ -->
-<section id="softmax">
+<div class="partband">
+  <div class="inner">
+    <p class="pn">Part three</p>
+    <h3>What it bought, and what v2 changed</h3>
+    <p>The algorithm above is FlashAttention-2. The original FlashAttention had the same core idea with
+    the loops the other way around — a small-looking difference with a large cost.</p>
+  </div>
+</div>
+
+<!-- ============ TRAFFIC ============ -->
+<section id="traffic">
   <div class="wrap">
-    <span class="secno">03 · The enabling trick</span>
-    <h2>Online softmax: normalizing a row you haven't finished reading</h2>
-    <p>Softmax looks like it needs the whole row first — you can't divide by the sum of exponentials
-    before you've seen every score, and for numerical stability you subtract the row max, which you
-    also don't know yet. The fix is to keep <b>two running statistics</b> per row and repair the past
-    whenever the future surprises you:</p>
-    <div class="formula">
-      m<sub>new</sub> = max(m<sub>old</sub>, max(new scores))<br>
-      ℓ<sub>new</sub> = <span style="color:var(--hot)">e^(m<sub>old</sub> − m<sub>new</sub>)</span> · ℓ<sub>old</sub> + Σ e^(sᵢ − m<sub>new</sub>)<br>
-      <span class="c">— the red factor rescales everything accumulated so far to the new reference max</span>
-    </div>
-    <p>One row, eight scores, arriving in two blocks of four. Step through it:</p>
+    <span class="secno">Payoff 01 · Memory traffic</span>
+    <h2>Less moved, and nothing quadratic allocated</h2>
+    <p>Standard attention moves Θ(N²) values through HBM. FlashAttention moves Θ(N²d²/M), where M is
+    SRAM size — and since M ≫ d², that's dramatically less. It also never allocates anything N×N, so
+    memory use is <b>linear</b> in N and sequence length stops being capped by attention's footprint.</p>
 
     <div class="app">
-      <p class="app-title"><span>online-softmax · one row · two blocks</span></p>
-      <div class="controls">
-        <button id="osReset">⏮ Reset</button>
-        <button id="osStep" class="primary">Process next block ›</button>
+      <p class="app-title"><span>HBM traffic · fp16, d = 64, one head</span></p>
+      <div class="slider-row">
+        <div>
+          <label for="slN">Sequence length N = <span class="val num" id="lblN">4096</span></label>
+          <input type="range" id="slN" min="9" max="15" value="12" step="1" aria-label="Sequence length (power of two)">
+        </div>
+        <div>
+          <label for="slM">SRAM per SM = <span class="val num" id="lblM">128 KB</span></label>
+          <input type="range" id="slM" min="64" max="228" value="128" step="4" aria-label="SRAM size in kilobytes">
+        </div>
       </div>
-      <div class="os-scores" id="osScores"></div>
-      <div class="os-chunklbl"><span>block 1</span><span>block 2</span></div>
-      <div class="os-math" id="osMath"></div>
-      <div class="os-verdict" id="osVerdict">
-        <span class="ok">EXACT</span>
-        <span style="color:var(--ink2);font-size:14px">Identical to the two-pass softmax over all 8 scores — to machine precision. This is why FlashAttention is exact, not an approximation.</span>
+      <div class="tbars">
+        <div class="tbar std">
+          <div class="tl"><span>Standard attention <span style="color:var(--ink3)">(writes &amp; re-reads S and P)</span></span><span class="bytes num" id="bStdLbl"></span></div>
+          <div class="track"><div class="fill" id="bStd"></div></div>
+        </div>
+        <div class="tbar fla">
+          <div class="tl"><span>FlashAttention <span style="color:var(--ink3)">(re-reads K,V once per Q-block pass)</span></span><span class="bytes num" id="bFlaLbl"></span></div>
+          <div class="track"><div class="fill" id="bFla"></div></div>
+        </div>
+      </div>
+      <div class="ratio-tile">
+        <span class="rv num" id="ratioV">—</span>
+        <span class="rl">less HBM traffic — and the N×N matrix (<span class="num" id="nnBytes"></span> it would have occupied) is never allocated at all.</span>
       </div>
     </div>
 
-    <p style="margin-top:28px">In the full algorithm the same correction factor e^(m<sub>old</sub> − m<sub>new</sub>)
-    also multiplies the output accumulator O<sub>acc</sub>, since every previously-added term
-    e^(s − m<sub>old</sub>)·v carries the old reference max. That's the rescale you saw flash in
-    section 02. The division by ℓ happens <b>once, at the very end</b> — one of FlashAttention-2's
-    tweaks over v1, which divided as it went.</p>
+    <p style="margin-top:26px">Larger SRAM means larger blocks, which means fewer passes over K and V —
+    that's the M in the denominator. And the gap widens with N, which is why this matters more every
+    hardware generation: compute keeps outgrowing bandwidth.</p>
   </div>
 </section>
 
-<!-- ============ 4. FA1 vs FA2 ============ -->
+<!-- ============ FA1 vs FA2 ============ -->
 <section id="fa2">
   <div class="wide">
     <div class="wrap" style="padding:0">
-      <span class="secno">04 · What v2 changed</span>
+      <span class="secno">Payoff 02 · Version 2</span>
       <h2>Swap the loops, and the accumulator stops commuting</h2>
       <p>FlashAttention-1 put the <b>K/V loop outside</b>: fix a K/V block, then visit every Q block.
-      But the running state (O, m, ℓ) belongs to <b>rows</b> — to Q blocks. Visit the tiles
-      column-by-column and each Q row's accumulator must be written back to HBM and re-read on every
-      single visit. Visit them row-by-row (FA-2) and the accumulator just stays in registers. Race them:</p>
+      But the running state (O, m, ℓ) belongs to <b>rows</b> — to Q blocks. Sweeping column by column
+      means each Q block's accumulator must be written back to HBM and re-read on every visit. Sweeping
+      row by row, as in the algorithm above, lets it stay in registers. Same tiles, same math, very
+      different traffic:</p>
     </div>
 
     <div class="app">
@@ -640,7 +792,7 @@ kbd {
           <h4>FlashAttention-1</h4>
           <div class="sub">outer loop over K/V (columns) · O bounces to HBM</div>
           <div class="race-grid" id="raceGrid1"></div>
-          <div class="race-stat">O-accumulator HBM traffic:<br><span class="big num" id="raceCtr1">0</span> block reads+writes</div>
+          <div class="race-stat">O-accumulator HBM traffic:<br><span class="big num" id="raceCtr1">0</span> block reads + writes</div>
         </div>
         <div class="race-side">
           <h4>FlashAttention-2</h4>
@@ -649,79 +801,38 @@ kbd {
           <div class="race-stat">O-accumulator HBM traffic:<br><span class="big good num" id="raceCtr2">0</span> block writes, ever</div>
         </div>
       </div>
+      <p class="figcap" style="margin-top:16px">Counting one read plus one write of the O block per tile
+      visit for v1, against one write per finished Q block for v2 — a simplification of the real kernel,
+      but the asymptotics are the point.</p>
     </div>
 
     <div class="wrap" style="padding:0">
       <div class="improve">
         <div class="card">
           <h4>Fewer non-matmul FLOPs</h4>
-          <p>GPUs do matmuls ~16× faster than everything else, so scalar work is precious. FA-2 keeps
-          O <b>unnormalized</b> until the final step (one division per row instead of one per block) and
-          stores a single statistic L = m + log ℓ for the backward pass instead of both m and ℓ.</p>
+          <p>GPUs run matmuls roughly 16× faster than other arithmetic, so scalar work is expensive in
+          relative terms. v2 keeps O <b>unnormalized</b> until line 12 — one division per row for the
+          whole sweep instead of one per block — and saves the single statistic L rather than both m and ℓ.</p>
         </div>
         <div class="card">
           <h4>Parallelism over sequence length</h4>
-          <p>FA-1 launched one thread block per (batch × head) — too few to fill a GPU for long
-          sequences at small batch. Because FA-2's Q blocks are independent, it also parallelizes
-          <b>across the row dimension</b>, keeping all SMs busy even at batch size 1.</p>
+          <p>v1 launched one thread block per (batch × head), too few to fill a GPU at long sequence
+          and small batch. Since v2's Q blocks are independent, it also parallelizes <b>across rows</b>,
+          keeping every SM busy even at batch size 1.</p>
         </div>
         <div class="card">
           <h4>Better warp partitioning</h4>
-          <p>Within a thread block, FA-1 split <b>K/V</b> across warps — each warp got a partial
-          result, which needed shared-memory writes and a synchronized reduction ("split-K").
-          FA-2 splits <b>Q</b> across warps: each warp owns whole rows, so no communication at all.</p>
+          <p>Inside a thread block, v1 split <b>K/V</b> across warps, so each warp held a partial result
+          that needed shared-memory writes and a synchronized reduction. v2 splits <b>Q</b> across warps —
+          each warp owns whole rows and needs no communication at all.</p>
         </div>
       </div>
-      <p style="margin-top:24px">Net effect: ~2× faster than FlashAttention-1, reaching 50–73% of the
-      A100's theoretical peak FLOPs — on <i>exact</i> attention.</p>
+      <p style="margin-top:24px">Together: about 2× faster than FlashAttention-1, reaching 50–73% of an
+      A100's theoretical peak FLOPs — on exact attention, with no approximation anywhere.</p>
+      <p style="margin-top:20px"><b>Training also needs gradients</b> — and the backward pass needs P,
+      which this algorithm deliberately never kept. That's the subject of the second page:</p>
+      <a class="nextlink" href="backward.html">02 · The backward pass →</a>
     </div>
-  </div>
-</section>
-
-<!-- ============ 5. TRAFFIC SANDBOX ============ -->
-<section id="sandbox">
-  <div class="wrap">
-    <span class="secno">05 · Why it scales</span>
-    <h2>The payoff grows with sequence length</h2>
-    <p>Standard attention moves Θ(N²) values through HBM; FlashAttention moves Θ(N²d²/M), where M is
-    SRAM size — and since M ≫ d², that's far less. Crucially, memory also stops being the thing that
-    caps N: nothing of size N² is ever stored, so memory use is <b>linear</b> in N. Drag the sliders
-    (fp16, d = 64, one head):</p>
-
-    <div class="app">
-      <div class="sand-controls">
-        <div>
-          <label>Sequence length N = <span class="val num" id="lblN">4096</span></label>
-          <input type="range" id="slN" min="9" max="15" value="12" step="1" aria-label="Sequence length (power of two)">
-        </div>
-        <div>
-          <label>SRAM per SM = <span class="val num" id="lblM">128 KB</span></label>
-          <input type="range" id="slM" min="64" max="228" value="128" step="4" aria-label="SRAM size in kilobytes">
-        </div>
-      </div>
-      <div class="tbars">
-        <div class="tbar std">
-          <div class="tl"><span>Standard attention <span style="color:var(--ink3)">(writes &amp; re-reads S and P)</span></span><span class="bytes num" id="bStdLbl"></span></div>
-          <div class="track"><div class="fill" id="bStd"></div></div>
-        </div>
-        <div class="tbar fla">
-          <div class="tl"><span>FlashAttention <span style="color:var(--ink3)">(re-reads K,V per Q-block pass)</span></span><span class="bytes num" id="bFlaLbl"></span></div>
-          <div class="track"><div class="fill" id="bFla"></div></div>
-        </div>
-      </div>
-      <div class="ratio-tile">
-        <span class="rv num" id="ratioV">—</span>
-        <span class="rl">less HBM traffic — and the N×N matrix (<span class="num" id="nnBytes"></span> it would occupy) is never allocated at all.</span>
-      </div>
-    </div>
-
-    <p style="margin-top:28px">Longer sequences widen the gap: standard traffic grows with N² while the
-    N² term in FlashAttention is divided by M/d² (how many times a K/V pass fits in SRAM). Bigger SRAM
-    → bigger blocks → fewer passes over K and V. This is also why the technique matters more every
-    hardware generation: compute keeps growing faster than memory bandwidth.</p>
-    <p style="margin-top:20px"><b>But training needs gradients</b> — and the backward pass needs P,
-    which was never stored. That gets its own page:
-    <a href="backward.html" style="color:var(--k);font-weight:600">02 · The backward pass →</a></p>
   </div>
 </section>
 
@@ -729,219 +840,295 @@ kbd {
   <div class="wrap">
     Built from <a href="https://arxiv.org/abs/2307.08691" target="_blank" rel="noopener">FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning</a> (Tri Dao, 2023)
     and <a href="https://arxiv.org/abs/2205.14135" target="_blank" rel="noopener">the original FlashAttention paper</a> (Dao et al., 2022).
-    All numbers in section 02 and 03 are computed live; HBM figures are A100-class. Educational toy sizes — real kernels use N in the thousands and block sizes like 128×64.
+    Every number in the interactive panels is computed live in your browser; hardware figures are A100-class.
+    Toy block sizes are for legibility — real kernels use N in the thousands and blocks like 128×64.
   </div>
 </footer>
 
 <script>
 "use strict";
-/* ---------------- utilities ---------------- */
+const $=id=>document.getElementById(id);
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
-const rnd = mulberry32(42);
-const gauss = () => (rnd()+rnd()+rnd()+rnd()-2)*1.2; // approx normal
-const f2 = x => (x>=0?" ":"")+x.toFixed(2);
-const f3 = x => x.toFixed(3);
-const clone2 = m => m.map(r => r.slice());
+const f2=x=>(x>=0?" ":"")+x.toFixed(2);
+const f3=x=>x.toFixed(3);
+const clone2=m=>m.map(r=>r.slice());
+function fmtCount(n){
+  if(n>=1e6)return (n/1e6).toFixed(n>=1e7?0:1)+"M values";
+  if(n>=1e3)return (n/1e3).toFixed(0)+"K values";
+  return n+" values";
+}
+function fmtBytes(b){
+  if(b>=1e12)return (b/1e12).toFixed(2)+" TB";
+  if(b>=1e9)return (b/1e9).toFixed(2)+" GB";
+  if(b>=1e6)return (b/1e6).toFixed(1)+" MB";
+  if(b>=1e3)return (b/1e3).toFixed(0)+" KB";
+  return b+" B";
+}
 
-/* ---------------- problem setup ---------------- */
-const N=16, D=4, B=4, T=N/B; // T=4 blocks each way
-const Q=[],K=[],V=[];
-for(let i=0;i<N;i++){Q.push([0,0,0,0].map(gauss));K.push([0,0,0,0].map(gauss));V.push([0,0,0,0].map(gauss));}
-const SCALE = 1/Math.sqrt(D);
+/* ============ VIZ A · proportional shapes ============ */
+(function(){
+  const SQ=190, DD=64;
+  function draw(){
+    const n=Math.pow(2,+$('slShapeN').value);
+    $('lblShapeN').textContent=n.toLocaleString();
+    const stripW=Math.max(2, SQ*DD/n);
+    [['shQ','dimQ','cntQ','--q'],['shK','dimK','cntK','--k'],['shV','dimV','cntV','--v'],['shO','dimO','cntO','--o']].forEach(([b,d,c,col])=>{
+      const el=$(b);
+      el.style.width=stripW.toFixed(1)+'px';
+      el.style.height=SQ+'px';
+      el.style.background='var('+col+')';
+      $(d).textContent=n.toLocaleString()+'×'+DD;
+      $(c).textContent=fmtCount(n*DD);
+    });
+    const s=$('shS');
+    s.style.width=SQ+'px'; s.style.height=SQ+'px';
+    s.style.background='var(--hot)'; s.style.opacity='.9';
+    $('dimS').textContent=n.toLocaleString()+'×'+n.toLocaleString();
+    $('cntS').textContent=fmtCount(n*n);
+    const ratio=n/DD;
+    $('shapesCap').innerHTML=`At N = ${n.toLocaleString()}, S holds <b>${(n*n/(n*DD)).toFixed(0)}×</b> as many values as Q — `+
+      `${fmtBytes(n*n*2)} versus ${fmtBytes(n*DD*2)} in fp16. Double N and the strips double; the square <b>quadruples</b>. `+
+      `The strips are drawn to the same scale as the square — at this N each is ${stripW<3?'barely a hairline':stripW.toFixed(0)+' pixels'} wide.`;
+  }
+  $('slShapeN').addEventListener('input',draw);
+  draw();
+})();
 
-function scoreTile(bi,bj){ // 4x4 block of QK^T/sqrt(d)
+/* ============ VIZ B · tiling geometry ============ */
+(function(){
+  const T=4;
+  const kTop=$('tgK'), qLeft=$('tgQ'), sGrid=$('tgS');
+  for(let j=0;j<T;j++){const d=document.createElement('div');d.textContent='K'+j;kTop.appendChild(d);}
+  for(let i=0;i<T;i++){const d=document.createElement('div');d.textContent='Q'+i;qLeft.appendChild(d);}
+  const cells=[];
+  for(let i=0;i<T;i++)for(let j=0;j<T;j++){
+    const b=document.createElement('button');
+    b.setAttribute('aria-label',`tile ${i},${j}`);
+    b.addEventListener('click',()=>sel(i,j));
+    b.addEventListener('mouseenter',()=>sel(i,j));
+    sGrid.appendChild(b);cells.push(b);
+  }
+  function sel(i,j){
+    cells.forEach((c,ix)=>c.classList.toggle('on',ix===i*T+j));
+    [...kTop.children].forEach((e,x)=>e.classList.toggle('on',x===j));
+    [...qLeft.children].forEach((e,x)=>e.classList.toggle('on',x===i));
+    $('tgOut').innerHTML=`tile <b>S<sub>${i}${j}</sub></b> = <b>Q<sub>${i}</sub></b> · <b>K<sub>${j}</sub></b>ᵀ / √d<br>`+
+      `<span style="font-size:13px;color:var(--ink3)">rows ${i*4}–${i*4+3} of Q against rows ${j*4}–${j*4+3} of K — `+
+      `two small blocks in, one small tile out</span>`;
+  }
+  sel(1,2);
+})();
+
+/* ============ VIZ C · online softmax bars ============ */
+(function(){
+  const S=[1.2,3.1,0.4,2.2,5.0,1.1,2.8,0.7];
+  const m1=Math.max(...S.slice(0,4));
+  const l1=S.slice(0,4).reduce((a,s)=>a+Math.exp(s-m1),0);
+  const m2=Math.max(...S);
+  const corr=Math.exp(m1-m2);
+  const l2=corr*l1+S.slice(4).reduce((a,s)=>a+Math.exp(s-m2),0);
+  const lf=S.reduce((a,s)=>a+Math.exp(s-m2),0);
+  const PLOT=190;
+  const plot=$('osPlot');
+  const bars=S.map((v,ix)=>{
+    const b=document.createElement('div');b.className='bar';
+    b.innerHTML='<i></i><span class="sv">'+v.toFixed(1)+'</span>';
+    plot.appendChild(b);return b;
+  });
+  let stage=0;
+  function render(){
+    const m = stage===0 ? null : (stage===1 ? m1 : m2);
+    bars.forEach((b,ix)=>{
+      const seen = stage>=1&&ix<4 || stage>=2;
+      b.classList.toggle('seen',seen);
+      b.classList.toggle('ismax', seen && S[ix]===m);
+      const w = seen ? Math.exp(S[ix]-m) : 0;
+      b.querySelector('i').style.height=(w*(PLOT-34)).toFixed(1)+'px';
+    });
+    const ml=$('osMline');
+    ml.style.bottom = stage===0 ? '-100px' : (PLOT-34+14)+'px';
+    $('osMlbl').textContent = stage===0 ? '' : 'm = '+m.toFixed(1)+'  (weight 1.0)';
+    const M=$('osMath');
+    if(stage===0){
+      M.innerHTML='state: m = −∞ &nbsp; ℓ = 0<br><br><span style="color:var(--ink3)">Nothing processed yet. Scores arrive four at a time — exactly as one row of Q meets one block of K at a time.</span>';
+      $('osVerdict').classList.remove('show');
+    } else if(stage===1){
+      M.innerHTML=
+`<b>block 1</b> = [1.2, 3.1, 0.4, 2.2] &nbsp; m ← <b>3.1</b>
+ℓ ← e^(1.2−3.1) + e^0 + e^(0.4−3.1) + e^(2.2−3.1) = <b>${l1.toFixed(4)}</b>
+<span style="color:var(--ink3)">Provisional. If a larger score arrives, every bar above is measured against the wrong reference.</span>`;
+      $('osVerdict').classList.remove('show');
+    } else {
+      M.innerHTML=
+`<b>block 2</b> = [5.0, 1.1, 2.8, 0.7] — 5.0 &gt; 3.1, so m ← <b>5.0</b>
+<span class="fx">α = e^(3.1 − 5.0) = ${corr.toFixed(4)}</span> <span style="color:var(--ink3)">← the first four bars just shrank by exactly this factor</span>
+ℓ ← <span class="fx">${corr.toFixed(4)}</span> × ${l1.toFixed(4)} + e^0 + e^(1.1−5) + e^(2.8−5) + e^(0.7−5) = <b>${l2.toFixed(6)}</b>
+two-pass softmax over all 8 at once: ℓ = <b>${lf.toFixed(6)}</b>`;
+      $('osVerdict').classList.add('show');
+    }
+    $('osStep').disabled=stage>=2;
+    $('osStep').textContent = stage===0?'Process block 1 ›' : stage===1?'Process block 2 ›' : 'Done';
+  }
+  $('osStep').addEventListener('click',()=>{if(stage<2){stage++;render();}});
+  $('osReset').addEventListener('click',()=>{stage=0;render();});
+  render();
+})();
+
+/* ============ THE STEPPER ============ */
+const N=16, D=4, B=4, T=N/B;
+const Qm=[],Km=[],Vm=[];
+(function(){
+  const r=mulberry32(42);const g=()=>(r()+r()+r()+r()-2)*1.2;
+  for(let i=0;i<N;i++){Qm.push([0,0,0,0].map(g));Km.push([0,0,0,0].map(g));Vm.push([0,0,0,0].map(g));}
+})();
+const SCALE=1/Math.sqrt(D);
+function scoreTile(bi,bj){
   const S=[];
   for(let r=0;r<B;r++){const row=[];
-    for(let c=0;c<B;c++){let s=0;for(let k2=0;k2<D;k2++)s+=Q[bi*B+r][k2]*K[bj*B+c][k2];row.push(s*SCALE);}
+    for(let c=0;c<B;c++){let s=0;for(let k=0;k<D;k++)s+=Qm[bi*B+r][k]*Km[bj*B+c][k];row.push(s*SCALE);}
     S.push(row);}
   return S;
 }
-
-/* ---------------- build full trace ---------------- */
-// phases: loadQ, loadKV, score, update, write
 const trace=[];
-let hbmR=0, hbmW=0;
-for(let i=0;i<T;i++){
-  let m=[-Infinity,-Infinity,-Infinity,-Infinity];
-  let l=[0,0,0,0];
-  let O=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
-  hbmR++;
-  trace.push({ph:'loadQ',i,j:-1,m:m.slice(),l:l.slice(),O:clone2(O),S:null,hbmR,hbmW,
-    note:`<b>Lines 1–3. Load Q${i}</b> from HBM into SRAM. Fresh start for these 4 rows: m = −∞, ℓ = 0, O<sub>acc</sub> = 0. These will live on-chip for the entire sweep.`});
-  for(let j=0;j<T;j++){
-    hbmR+=2;
-    trace.push({ph:'loadKV',i,j,m:m.slice(),l:l.slice(),O:clone2(O),S:null,hbmR,hbmW,
-      note:`<b>Lines 4–5. Load K${j}, V${j}</b> from HBM. SRAM now holds one block of each operand — everything needed to compute attention tile (${i},${j}) entirely on-chip.`});
-    const S=scoreTile(i,j);
-    trace.push({ph:'score',i,j,m:m.slice(),l:l.slice(),O:clone2(O),S:clone2(S),hbmR,hbmW,
-      note:`<b>Line 6. S = Q${i}·K${j}ᵀ / √d</b> — a 4×4 tile of scores, computed by the tensor cores straight into SRAM. In standard attention this tile would now be shipped out to HBM.`});
-    // lines 7–8: new max + unnormalized weights
-    const mNew=m.map((mv,r)=>Math.max(mv,...S[r]));
-    const corr=m.map((mv,r)=>mv===-Infinity?1:Math.exp(mv-mNew[r]));
-    const P=S.map((row,r)=>row.map(s=>Math.exp(s-mNew[r])));
-    const bumped=mNew.map((mv,r)=>m[r]!==-Infinity&&mv>m[r]);
-    const nb=bumped.filter(Boolean).length;
-    let wnote;
-    if(j===0){
-      wnote=`<b>Lines 7–8.</b> First tile for this Q block, so m′ is simply each row's max over S, and P = exp(S − m′) — provisional softmax numerators, safe from overflow because the biggest exponent is e⁰.`;
-    } else if(nb>0){
-      wnote=`<b>Lines 7–8.</b> Tile (${i},${j}) contains a new row max for <b>${nb} row(s)</b> — m′ jumps there. P = exp(S − m′) uses the <i>new</i> reference, which means everything accumulated under the old one is now stale…`;
-    } else {
-      wnote=`<b>Lines 7–8.</b> No score in tile (${i},${j}) beats the running max — m′ = m. P = exp(S − m′) is computed against the same reference as before.`;
+(function(){
+  let hbmR=0,hbmW=0;
+  for(let i=0;i<T;i++){
+    let m=[-Infinity,-Infinity,-Infinity,-Infinity], l=[0,0,0,0];
+    let O=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+    hbmR++;
+    trace.push({ph:'loadQ',i,j:-1,m:m.slice(),l:l.slice(),O:clone2(O),P:null,hbmR,hbmW,
+      note:`<b>Lines 1–3.</b> Load Q${i} into SRAM and zero the state for its 4 rows: m = −∞, ℓ = 0, O<sub>acc</sub> = 0. All three stay in registers until line 13.`});
+    for(let j=0;j<T;j++){
+      hbmR+=2;
+      trace.push({ph:'loadKV',i,j,m:m.slice(),l:l.slice(),O:clone2(O),P:null,hbmR,hbmW,
+        note:`<b>Lines 4–5.</b> Load K${j} and V${j}. SRAM now holds one block of each operand — everything tile (${i},${j}) needs.`});
+      const S=scoreTile(i,j);
+      trace.push({ph:'score',i,j,m:m.slice(),l:l.slice(),O:clone2(O),P:clone2(S),isS:true,hbmR,hbmW,
+        note:`<b>Line 6.</b> S = Q${i}·K${j}ᵀ/√d — one 4×4 tile of the attention matrix, built by the tensor cores directly in SRAM. Standard attention would ship this to HBM right now.`});
+      const mNew=m.map((mv,r)=>Math.max(mv,...S[r]));
+      const alpha=m.map((mv,r)=>mv===-Infinity?1:Math.exp(mv-mNew[r]));
+      const P=S.map((row,r)=>row.map(s=>Math.exp(s-mNew[r])));
+      const bumped=mNew.map((mv,r)=>m[r]!==-Infinity&&mv>m[r]);
+      const nb=bumped.filter(Boolean).length;
+      let wnote;
+      if(j===0) wnote=`<b>Lines 7–8.</b> First tile, so m′ is just this tile's row maxima. P = exp(S − m′) — the softmax numerators, with the largest in each row equal to e⁰ = 1, so nothing can overflow.`;
+      else if(nb>0) wnote=`<b>Lines 7–8.</b> This tile holds a new row maximum for <b>${nb} row(s)</b>, so m′ rises there. P is measured against the new reference — which leaves everything accumulated so far measured against the old one.`;
+      else wnote=`<b>Lines 7–8.</b> Nothing in this tile beats the running max, so m′ = m and P uses the same reference as before.`;
+      trace.push({ph:'weights',i,j,m:mNew.slice(),l:l.slice(),O:clone2(O),P:clone2(P),alpha:alpha.slice(),bumped,hbmR,hbmW,note:wnote});
+      const lNew=l.map((lv,r)=>alpha[r]*lv+P[r].reduce((a,b)=>a+b,0));
+      const ONew=O.map((row,r)=>row.map((ov,c)=>{let pv=0;for(let t=0;t<B;t++)pv+=P[r][t]*Vm[j*B+t][c];return alpha[r]*ov+pv;}));
+      const worst=alpha.reduce((acc,cv,r)=>(m[r]!==-Infinity&&cv<acc.v)?{v:cv,r}:acc,{v:2,r:-1});
+      let anote;
+      if(j===0) anote=`<b>Lines 9–11.</b> Nothing to repair yet (α = 1): ℓ = rowsum P, O<sub>acc</sub> = P·V${j}. The tile is folded into the output and discarded — it will never be reconstructed.`;
+      else if(worst.r>=0&&worst.v<0.999) anote=`<b>Lines 9–11.</b> <b style="color:var(--hot)">α = e^(m−m′) rescales the stale accumulations</b> (row ${worst.r}: ×${f3(worst.v)}) — one multiply repairs every earlier tile at once — then this tile is added on top.`;
+      else anote=`<b>Lines 9–11.</b> α = e⁰ = 1, so this is pure accumulation: ℓ += rowsum P, O<sub>acc</sub> += P·V${j}.`;
+      m=mNew;l=lNew;O=ONew;
+      trace.push({ph:'accum',i,j,m:m.slice(),l:l.slice(),O:clone2(O),P:clone2(P),alpha:alpha.slice(),bumped,hbmR,hbmW,note:anote});
     }
-    trace.push({ph:'weights',i,j,m:mNew.slice(),l:l.slice(),O:clone2(O),S:clone2(P),isP:true,corr:corr.slice(),bumped,hbmR,hbmW,note:wnote});
-    // lines 9–11: rescale + accumulate
-    const lNew=l.map((lv,r)=>corr[r]*lv+P[r].reduce((a,b)=>a+b,0));
-    const ONew=O.map((row,r)=>row.map((ov,c)=>{let pv=0;for(let t=0;t<B;t++)pv+=P[r][t]*V[j*B+t][c];return corr[r]*ov+pv;}));
-    const worst=corr.reduce((acc,cv,r)=>(m[r]!==-Infinity&&cv<acc.v)?{v:cv,r}:acc,{v:2,r:-1});
-    let anote;
-    if(j===0){
-      anote=`<b>Lines 9–11.</b> Nothing to repair yet (α = 1): ℓ = row-sums of P, O<sub>acc</sub> = P·V${j}. One tile of the softmax numerator, folded into the output and gone.`;
-    } else if(worst.r>=0 && worst.v<0.999){
-      anote=`<b>Lines 9–11.</b> The stale accumulations get <b style="color:var(--hot)">rescaled by α = e^(m−m′)</b> (row ${worst.r}: ×${f3(worst.v)}) — one multiply repairs every past tile — then this tile is added: ℓ ← α·ℓ + rowsum P, O<sub>acc</sub> ← α·O<sub>acc</sub> + P·V${j}.`;
-    } else {
-      anote=`<b>Lines 9–11.</b> α = e⁰ = 1, so this is pure accumulation: ℓ += row-sums of P, O<sub>acc</sub> += P·V${j}. Tile (${i},${j}) is folded in and discarded.`;
-    }
-    m=mNew;l=lNew;O=ONew;
-    trace.push({ph:'accum',i,j,m:m.slice(),l:l.slice(),O:clone2(O),S:clone2(P),isP:true,corr:corr.slice(),bumped,hbmR,hbmW,note:anote});
+    hbmW++;
+    const Ofin=O.map((row,r)=>row.map(v=>v/l[r]));
+    trace.push({ph:'write',i,j:T,m:m.slice(),l:l.slice(),O:clone2(Ofin),P:null,final:true,hbmR,hbmW,
+      note:`<b>Lines 12–13.</b> All ${T} K/V blocks seen, so divide by ℓ <i>once</i> — v1 divided on every iteration — save L${i} = m + log ℓ for the backward pass, and write O${i} out. These rows are finished.`});
   }
-  hbmW++;
-  const Ofin=O.map((row,r)=>row.map(v=>v/l[r]));
-  trace.push({ph:'write',i,j:T,m:m.slice(),l:l.slice(),O:clone2(Ofin),S:null,final:true,hbmR,hbmW,
-    note:`<b>Lines 12–13. Finalize &amp; write O${i}.</b> All ${T} K/V blocks seen — divide by ℓ <i>once</i> (FA-2 defers this; FA-1 divided every iteration), save L${i} = m + log ℓ for the backward pass, and write the finished block to HBM. Rows done, state discarded.`});
-}
+})();
 
-/* ---------------- stepper DOM ---------------- */
-const $=id=>document.getElementById(id);
 const tilesEl=$('tiles'), axisK=$('axisK'), axisQ=$('axisQ');
 for(let j=0;j<T;j++){const s=document.createElement('span');s.textContent='K'+j;axisK.appendChild(s);}
 for(let i=0;i<T;i++){const s=document.createElement('span');s.textContent='Q'+i;axisQ.appendChild(s);}
 const tileEls=[];
 for(let i=0;i<T;i++)for(let j=0;j<T;j++){const d=document.createElement('div');d.className='tile';d.title=`tile (${i},${j})`;tilesEl.appendChild(d);tileEls.push(d);}
 
-const SLOTS=[
-  {id:'sq', cls:'q', tag:'Q'},
-  {id:'sk', cls:'k', tag:'K'},
-  {id:'sv', cls:'v', tag:'V'},
-  {id:'ss', cls:'st', tag:'S'},
-  {id:'so', cls:'o', tag:'O'},
-];
-const sramWrap=$('sramSlots');
-const slotEls={};
+const SLOTS=[{k:'q',t:'Q'},{k:'k',t:'K'},{k:'v',t:'V'},{k:'s',t:'P'},{k:'o',t:'O'}];
+const slotEls=[];
 SLOTS.forEach(s=>{
-  const d=document.createElement('div');d.className='slot empty '+s.cls;
-  d.innerHTML=`<span class="tag">${s.tag}</span><span class="txt"><span class="lbl">—</span> <span class="sub"></span></span>`;
-  sramWrap.appendChild(d);slotEls[s.id]=d;
+  const d=document.createElement('div');d.className='sl '+s.k;
+  d.innerHTML='<span class="t">—</span><small></small>';
+  $('sramStrip').appendChild(d);slotEls.push(d);
 });
-function setSlot(id,on,lbl,sub,flash){
-  const el=slotEls[id];
-  el.classList.toggle('empty',!on);
-  el.querySelector('.lbl').textContent=on?lbl:'—';
-  el.querySelector('.sub').textContent=on?sub:'';
-  if(flash){el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
+function setSlot(ix,on,label,sub){
+  const el=slotEls[ix];
+  el.classList.toggle('on',on);
+  el.querySelector('.t').textContent=on?label:'—';
+  el.querySelector('small').textContent=on?sub:'';
 }
 
-const vecM=$('vecM'),vecL=$('vecL'),omat=$('omat');
-for(let r=0;r<B;r++){vecM.appendChild(document.createElement('span'));vecL.appendChild(document.createElement('span'));}
-for(let r=0;r<16;r++)omat.appendChild(document.createElement('span'));
+const vecM=$('vecM'),vecL=$('vecL'),vecO=$('vecO'),heatP=$('heatP');
+for(let r=0;r<B;r++){vecM.appendChild(document.createElement('span'));vecL.appendChild(document.createElement('span'));vecO.appendChild(document.createElement('span'));}
+for(let r=0;r<16;r++)heatP.appendChild(document.createElement('span'));
 
-let cur=0, playing=false, timer=null;
-const nSteps=trace.length;
 const ALGO_LINES={loadQ:[1,2,3],loadKV:[4,5],score:[6],weights:[7,8],accum:[9,10,11],write:[12,13]};
 const alineEls=[...document.querySelectorAll('#algo .aline')];
+let cur=0, playing=false, timer=null;
+const nSteps=trace.length;
 
 function render(idx){
   cur=Math.max(0,Math.min(nSteps-1,idx));
   const st=trace[cur];
-  // narration
   const narr=$('narr');
   narr.innerHTML=st.note;
   narr.className='narr'+(st.ph==='loadQ'||st.ph==='loadKV'?' phase-load':st.ph==='write'?' phase-write':'');
-  // algorithm line highlight
   const lines=ALGO_LINES[st.ph]||[];
   alineEls.forEach(el=>el.classList.toggle('on',lines.includes(+el.dataset.l)));
-  // counters & position
   $('stepCtr').textContent=`step ${cur+1} / ${nSteps}`;
-  $('loopPos').textContent=st.j>=0&&st.j<T?`outer i=${st.i} · inner j=${st.j}`:`outer i=${st.i}`;
+  $('loopPos').textContent=(st.j>=0&&st.j<T)?`i=${st.i} · j=${st.j}`:`i=${st.i}`;
   $('ctrRd').textContent=st.hbmR;
   $('ctrWr').textContent=st.hbmW;
   $('ctrSP').textContent='0';
-  // tiles
-  const doneCount=si=>{ // tiles fully processed up to step index
-    let n=0;
-    for(let t=0;t<=si;t++)if(trace[t].ph==='accum')n++;
-    return n;
-  };
-  const nd=doneCount(cur);
+  let nd=0; for(let t=0;t<=cur;t++) if(trace[t].ph==='accum') nd++;
   tileEls.forEach((el,ix)=>{
     el.className='tile';
     const i=Math.floor(ix/T), j=ix%T;
-    const tileOrder=i*T+j;
-    if(tileOrder<nd)el.classList.add('done');
+    if(i*T+j<nd)el.classList.add('done');
     if(st.j>=0&&st.j<T&&i===st.i&&j===st.j&&st.ph!=='write')el.classList.add('cur');
   });
-  // axes
   [...axisQ.children].forEach((el,i)=>el.classList.toggle('on',i===st.i));
   [...axisK.children].forEach((el,j)=>el.classList.toggle('on',st.j>=0&&st.j<T&&j===st.j));
-  // SRAM slots
-  setSlot('sq',true,'Q'+st.i,'4×4 · stays all sweep');
   const kvOn=st.j>=0&&st.j<T;
-  setSlot('sk',kvOn,'K'+st.j,'4×4 · this iteration only', st.ph==='loadKV');
-  setSlot('sv',kvOn,'V'+st.j,'4×4 · this iteration only', st.ph==='loadKV');
-  setSlot('ss',!!st.S,(st.isP?'P':'S')+' tile','4×4 · never leaves chip', st.ph==='score');
-  setSlot('so',true,'O'+st.i+(st.final?' ✓':' acc'),st.final?'normalized, written out':'+ m, ℓ in registers', st.ph==='write');
-  // S block table
-  const wrap=$('sblockWrap'), tbl=$('sblockTbl');
-  if(st.S){
-    wrap.style.visibility='visible';
-    $('sblockCap').textContent=st.isP?`P = exp(S − m) · tile (${st.i},${st.j})`:`S = Q${st.i}·K${st.j}ᵀ/√d`;
-    tbl.querySelectorAll('tr').forEach(tr=>tr.remove());
-    st.S.forEach(row=>{const tr=document.createElement('tr');
-      row.forEach(v=>{const td=document.createElement('td');td.textContent=f2(v);
-        if(!st.isP&&v===Math.max(...row))td.classList.add('hotcell');
-        tr.appendChild(td);});
-      tbl.appendChild(tr);});
-  } else { wrap.style.visibility='hidden'; }
-  // state vectors
+  setSlot(0,true,'Q'+st.i,'all sweep');
+  setSlot(1,kvOn,'K'+st.j,'this iter');
+  setSlot(2,kvOn,'V'+st.j,'this iter');
+  setSlot(3,!!st.P,st.isS?'S tile':'P tile','on-chip only');
+  setSlot(4,true,'O'+st.i+(st.final?'✓':''),st.final?'written':'registers');
   $('stateQi').textContent='Q'+st.i;
+  // P heatmap
+  const hs=[...heatP.children];
+  if(st.P){
+    const flat=st.P.flat();
+    const mx=Math.max(...flat.map(Math.abs))||1;
+    hs.forEach((el,ix)=>{
+      const v=st.P[Math.floor(ix/4)][ix%4];
+      el.textContent=f2(v);
+      const inten=st.isS ? 0 : Math.min(1,Math.abs(v)/mx);
+      el.style.background=st.isS?'var(--panel)':`color-mix(in srgb, var(--q) ${(inten*72).toFixed(0)}%, var(--panel))`;
+    });
+  } else {
+    hs.forEach(el=>{el.textContent='·';el.style.background='var(--panel)';});
+  }
   [...vecM.children].forEach((el,r)=>{
     el.textContent=st.m[r]===-Infinity?'−∞':f2(st.m[r]);
     el.classList.toggle('bump',!!(st.bumped&&st.bumped[r]&&st.ph==='weights'));
   });
-  [...vecL.children].forEach((el,r)=>{el.textContent=f2(st.l[r]);el.classList.remove('bump');});
-  [...omat.children].forEach((el,ix)=>{
-    const r=Math.floor(ix/4),c=ix%4;el.textContent=f2(st.O[r][c]);
-    el.style.borderColor=st.final?'var(--o)':'var(--line)';
-  });
-  // scale note
+  [...vecL.children].forEach((el,r)=>{el.textContent=f2(st.l[r]);});
+  [...vecO.children].forEach((el,c)=>{el.textContent=f2(st.O[0][c]);});
   const sn=$('scaleNote');
-  if(st.ph==='weights'&&st.corr){
-    const nb2=st.bumped?st.bumped.filter(Boolean).length:0;
-    if(st.j===0){
-      sn.innerHTML='m′ initialized from this tile; P computed against it.<br>ℓ and O<sub>acc</sub> update next step (lines 9–11).';
-    } else if(nb2>0){
-      sn.innerHTML=`m′ rose for ${nb2} row(s) — highlighted above.<br>Past accumulations are now stale; the α-rescale lands next step.`;
-    } else {
-      sn.innerHTML='m′ = m everywhere — the past stays valid.<br>Next step accumulates with α = 1.';
-    }
-  } else if(st.ph==='accum'&&st.corr){
-    const any=st.corr.some((c,r)=>st.bumped&&st.bumped[r]);
-    if(st.j===0){
-      sn.innerHTML='First tile — statistics initialized from scratch, no correction needed.';
-    } else if(any){
-      sn.innerHTML='Row correction factors e^(m<sub>old</sub>−m<sub>new</sub>):<br>'+
-        st.corr.map((c,r)=>`r${r}: <b>${c<0.9995?f3(c):'1'}</b>`).join(' · ')+
-        '<br>Each multiplies that row of ℓ and O<sub>acc</sub>.';
-    } else {
-      sn.innerHTML='No row max changed → all correction factors = 1.<br>Pure accumulation this step.';
-    }
+  if(st.ph==='weights'){
+    const nb=st.bumped?st.bumped.filter(Boolean).length:0;
+    if(st.j===0) sn.innerHTML='m′ set from this tile. ℓ and O<sub>acc</sub> follow on lines 9–11.';
+    else if(nb>0) sn.innerHTML=`m′ rose for ${nb} row(s) — boxed above.<br>The α-rescale lands next step.`;
+    else sn.innerHTML='m′ unchanged — the past is still valid.<br>Next step accumulates with α = 1.';
+  } else if(st.ph==='accum'&&st.alpha){
+    const any=st.alpha.some((c,r)=>st.bumped&&st.bumped[r]);
+    if(st.j===0) sn.innerHTML='First tile — nothing to correct.';
+    else if(any) sn.innerHTML='α per row: '+st.alpha.map((c,r)=>`r${r} <b>${c<0.9995?f3(c):'1'}</b>`).join(' · ')+'<br>Each scales that row of ℓ and O<sub>acc</sub>.';
+    else sn.innerHTML='All α = 1 — pure accumulation this step.';
   } else if(st.ph==='write'){
-    sn.innerHTML=`Final normalize: O = O<sub>acc</sub> / ℓ (per row), <b>one</b> division per row for the whole sweep. L = m + log ℓ is saved for the backward pass.`;
+    sn.innerHTML='O ← O<sub>acc</sub>/ℓ, one division per row for the entire sweep. L = m + log ℓ goes to HBM for the backward pass.';
+  } else if(st.ph==='score'){
+    sn.innerHTML='Raw scores, pre-softmax. The largest value in each row is about to become the new reference.';
   } else {
-    sn.innerHTML='m and ℓ let the softmax be computed in pieces — see section 03.';
+    sn.innerHTML='m and ℓ are the running statistics that make block-wise softmax exact.';
   }
 }
-
 function stop(){playing=false;clearTimeout(timer);$('btnPlay').textContent='▶ Play';}
 function tick(){
   if(!playing)return;
@@ -959,7 +1146,7 @@ $('btnFwd').addEventListener('click',()=>{stop();render(cur+1);});
 $('btnBack').addEventListener('click',()=>{stop();render(cur-1);});
 $('btnReset').addEventListener('click',()=>{stop();render(0);});
 document.addEventListener('keydown',e=>{
-  const panel=document.querySelector('#stepper .app');
+  const panel=document.querySelector('#algorithm .app');
   const r=panel.getBoundingClientRect();
   if(r.bottom<0||r.top>innerHeight)return;
   if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;
@@ -969,128 +1156,57 @@ document.addEventListener('keydown',e=>{
 });
 render(0);
 
-/* ---------------- online softmax demo ---------------- */
-const osS=[1.2,3.1,0.4,2.2,5.0,1.1,2.8,0.7];
-const osWrap=$('osScores');
-osS.forEach(v=>{const s=document.createElement('span');s.textContent=v.toFixed(1);osWrap.appendChild(s);});
-let osStage=0;
-function osCalc(){
-  // chunk 1
-  const m1=Math.max(...osS.slice(0,4));
-  const l1=osS.slice(0,4).reduce((a,s)=>a+Math.exp(s-m1),0);
-  // chunk 2
-  const m2=Math.max(m1,...osS.slice(4));
-  const corr=Math.exp(m1-m2);
-  const l2=corr*l1+osS.slice(4).reduce((a,s)=>a+Math.exp(s-m2),0);
-  // full two-pass
-  const mf=Math.max(...osS);
-  const lf=osS.reduce((a,s)=>a+Math.exp(s-mf),0);
-  return {m1,l1,m2,corr,l2,mf,lf};
-}
-const OC=osCalc();
-function osRender(){
-  [...osWrap.children].forEach((el,ix)=>{
-    el.className='';
-    if(osStage>=1&&ix<4)el.classList.add('seen');
-    if(osStage>=2&&ix>=4)el.classList.add('seen');
-    if(osStage===1&&osS[ix]===OC.m1&&ix<4)el.classList.add('ismax');
-    if(osStage===2&&osS[ix]===OC.m2)el.classList.add('ismax');
-  });
-  const M=$('osMath');
-  if(osStage===0){
-    M.innerHTML=`state: m = −∞ &nbsp;&nbsp; ℓ = 0<br><br><span style="color:var(--ink3)">Nothing processed yet. We will see the scores four at a time —<br>exactly like one Q row sweeping across two K blocks in section 02.</span>`;
-    $('osVerdict').classList.remove('show');
-  } else if(osStage===1){
-    M.innerHTML=
-`<b>block 1</b> = [1.2, 3.1, 0.4, 2.2]<br>
-m ← max(−∞, 3.1) = <b>${OC.m1.toFixed(1)}</b><br>
-ℓ ← e^(1.2−3.1) + e^(3.1−3.1) + e^(0.4−3.1) + e^(2.2−3.1)<br>
-&nbsp;&nbsp;= <b>${OC.l1.toFixed(4)}</b><br><br>
-<span style="color:var(--ink3)">Looks like a finished softmax denominator — but it's provisional:<br>a bigger score may still arrive and make 3.1 the wrong reference.</span>`;
-    $('osVerdict').classList.remove('show');
-  } else {
-    M.innerHTML=
-`<b>block 2</b> = [5.0, 1.1, 2.8, 0.7] — contains 5.0 &gt; 3.1. Max was wrong!<br>
-m ← max(3.1, 5.0) = <b>${OC.m2.toFixed(1)}</b><br>
-<span class="fx">correction = e^(3.1 − 5.0) = ${OC.corr.toFixed(4)}</span> <span style="color:var(--ink3)">← repairs the past</span><br>
-ℓ ← <span class="fx">${OC.corr.toFixed(4)}</span> × ${OC.l1.toFixed(4)} + e^(5.0−5.0) + e^(1.1−5.0) + e^(2.8−5.0) + e^(0.7−5.0)<br>
-&nbsp;&nbsp;= <b>${OC.l2.toFixed(6)}</b><br><br>
-two-pass softmax over all 8 at once: m = ${OC.mf.toFixed(1)}, ℓ = <b>${OC.lf.toFixed(6)}</b>`;
-    $('osVerdict').classList.add('show');
+/* ============ FA1 vs FA2 race ============ */
+(function(){
+  const rg1=$('raceGrid1'),rg2=$('raceGrid2'),rc1=[],rc2=[];
+  for(let x=0;x<16;x++){const a=document.createElement('i');rg1.appendChild(a);rc1.push(a);
+    const b=document.createElement('i');rg2.appendChild(b);rc2.push(b);}
+  let t=-1,timer2=null,racing=false;
+  function draw(){
+    rc1.forEach((el,ix)=>{const i=Math.floor(ix/4),j=ix%4;const order=j*4+i;
+      el.className=order<t?'rdone':order===t?'rcur':'';});
+    rc2.forEach((el,ix)=>{el.className=ix<t?'rdone':ix===t?'rcur':'';});
+    const visits=Math.min(t+1,16);
+    $('raceCtr1').textContent=visits*2;
+    $('raceCtr2').textContent=Math.min(Math.floor(visits/4),4);
   }
-  $('osStep').disabled=osStage>=2;
-  $('osStep').textContent=osStage===0?'Process block 1 ›':osStage===1?'Process block 2 ›':'Done';
-}
-$('osStep').addEventListener('click',()=>{if(osStage<2){osStage++;osRender();}});
-$('osReset').addEventListener('click',()=>{osStage=0;osRender();});
-osRender();
-
-/* ---------------- FA1 vs FA2 race ---------------- */
-const rg1=$('raceGrid1'),rg2=$('raceGrid2');
-const rc1=[],rc2=[];
-for(let x=0;x<16;x++){const a=document.createElement('i');rg1.appendChild(a);rc1.push(a);
-  const b=document.createElement('i');rg2.appendChild(b);rc2.push(b);}
-let raceT=-1,raceTimer=null,racing=false;
-function raceRender(){
-  // FA1: column-major order; FA2: row-major
-  rc1.forEach((el,ix)=>{
-    const i=Math.floor(ix/4),j=ix%4;
-    const order=j*4+i; // column-major position
-    el.className=order<raceT?'rdone':order===raceT?'rcur':'';
+  function step(){
+    if(!racing)return;
+    t++;draw();
+    if(t>=16){racing=false;$('racePlay').textContent='▶ Race';t=16;draw();return;}
+    timer2=setTimeout(step,380);
+  }
+  $('racePlay').addEventListener('click',()=>{
+    if(racing){racing=false;clearTimeout(timer2);$('racePlay').textContent='▶ Race';return;}
+    if(t>=16)t=-1;
+    racing=true;$('racePlay').textContent='❚❚ Pause';step();
   });
-  rc2.forEach((el,ix)=>{
-    el.className=ix<raceT?'rdone':ix===raceT?'rcur':'';
-  });
-  // FA1: every tile visit = read O_i + write O_i back (except can skip read on first visit of that row... keep honest: first visit init in SRAM? FA1 reads & writes each visit after init; simplest honest count: 2 per visit)
-  const visits=Math.min(raceT+1,16);
-  $('raceCtr1').textContent=visits*2;
-  // FA2: one write per completed row
-  $('raceCtr2').textContent=Math.min(Math.floor(visits/4),4);
-}
-function raceStep(){
-  if(!racing)return;
-  raceT++;
-  raceRender();
-  if(raceT>=16){racing=false;$('racePlay').textContent='▶ Race';raceT=16;raceRender();return;}
-  raceTimer=setTimeout(raceStep,380);
-}
-$('racePlay').addEventListener('click',()=>{
-  if(racing){racing=false;clearTimeout(raceTimer);$('racePlay').textContent='▶ Race';return;}
-  if(raceT>=16)raceT=-1;
-  racing=true;$('racePlay').textContent='❚❚ Pause';raceStep();
-});
-$('raceReset').addEventListener('click',()=>{racing=false;clearTimeout(raceTimer);$('racePlay').textContent='▶ Race';raceT=-1;raceRender();});
-raceRender();
+  $('raceReset').addEventListener('click',()=>{racing=false;clearTimeout(timer2);$('racePlay').textContent='▶ Race';t=-1;draw();});
+  draw();
+})();
 
-/* ---------------- traffic sandbox ---------------- */
-const BYTES=2, DD=64;
-function fmtBytes(b){
-  if(b>=1e12)return (b/1e12).toFixed(2)+' TB';
-  if(b>=1e9)return (b/1e9).toFixed(2)+' GB';
-  if(b>=1e6)return (b/1e6).toFixed(1)+' MB';
-  return (b/1e3).toFixed(0)+' KB';
-}
-function sandRender(){
-  const n=Math.pow(2,+$('slN').value);
-  const mKB=+$('slM').value;
-  $('lblN').textContent=n.toLocaleString();
-  $('lblM').textContent=mKB+' KB';
-  const mElems=mKB*1024/BYTES;
-  // standard: read Q,K (2Nd) -> write S (N^2) -> read S, write P (2N^2) -> read P, read V (N^2+Nd) -> write O (Nd)
-  const std=(4*n*DD+4*n*n)*BYTES;
-  // flash: block rows Br ~ M/(4d); passes over K,V = ceil(N/Br); traffic = Q once + O once + K,V * passes
-  const br=Math.max(1,Math.floor(mElems/(4*DD)));
-  const passes=Math.ceil(n/br);
-  const fla=(2*n*DD+2*n*DD*passes)*BYTES;
-  const mx=std;
-  $('bStd').style.width='100%';
-  $('bFla').style.width=Math.max(0.5,fla/mx*100)+'%';
-  $('bStdLbl').textContent=fmtBytes(std);
-  $('bFlaLbl').textContent=fmtBytes(fla);
-  $('ratioV').textContent=(std/fla).toFixed(1)+'×';
-  $('nnBytes').textContent=fmtBytes(n*n*BYTES);
-}
-$('slN').addEventListener('input',sandRender);
-$('slM').addEventListener('input',sandRender);
-sandRender();
+/* ============ traffic sandbox ============ */
+(function(){
+  const BYTES=2, DD=64;
+  function draw(){
+    const n=Math.pow(2,+$('slN').value);
+    const mKB=+$('slM').value;
+    $('lblN').textContent=n.toLocaleString();
+    $('lblM').textContent=mKB+' KB';
+    const mElems=mKB*1024/BYTES;
+    const std=(4*n*DD+4*n*n)*BYTES;
+    const br=Math.max(1,Math.floor(mElems/(4*DD)));
+    const passes=Math.ceil(n/br);
+    const fla=(2*n*DD+2*n*DD*passes)*BYTES;
+    $('bStd').style.width='100%';
+    $('bFla').style.width=Math.max(0.5,fla/std*100)+'%';
+    $('bStdLbl').textContent=fmtBytes(std);
+    $('bFlaLbl').textContent=fmtBytes(fla);
+    $('ratioV').textContent=(std/fla).toFixed(1)+'×';
+    $('nnBytes').textContent=fmtBytes(n*n*BYTES);
+  }
+  $('slN').addEventListener('input',draw);
+  $('slM').addEventListener('input',draw);
+  draw();
+})();
 </script>
